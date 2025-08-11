@@ -1,0 +1,219 @@
+<template>
+    <AuthenticatedLayout :breadcrumbs="props?.breadcrumbs" :pageTitle="props?.pageTitle">
+
+        <div class="card">
+            <div class="card-header border-0 pt-6">
+                <div class="card-title">
+                    <!--begin::Search-->
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <KTIcon icon-name="magnifier" icon-class="fs-1 position-absolute ms-6" />
+                        <input type="text" v-model="search" @input="searchData()" class="form-control form-control-solid w-250px ps-15" :placeholder="$t('permission.placeholder.searchPermissions')" />
+                    </div>
+                    <!--end::Search-->
+                </div>
+
+                <div class="card-toolbar">
+                    <!--begin::Toolbar-->
+                    <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                        <!--begin::Add Permission-->
+                        <Link v-if="checkPermission('can-create-student')" :href="route('students.create')" class="btn btn-primary">
+                            <KTIcon icon-name="plus" icon-class="fs-2" />
+                            Add Student
+                        </Link>
+                        <!--end::Add Permission-->
+                    </div>
+                    <!--end::Toolbar-->
+                </div>
+            </div>
+
+            <div class="card-body pt-0">
+                <Datatable @on-sort="sortData" :data="tableData" :header="tableHeader" :enable-items-per-page-dropdown="true" :checkbox-enabled="false">
+                    <!-- Permission Name -->
+                     <template v-slot:roll="{ row: student }">
+                        {{ student.roll }}
+                    </template>
+
+                     <template v-slot:registration="{ row: student }">
+                        {{ student.registration }}
+                    </template>
+
+                    <template v-slot:name="{ row: student }">
+                        {{ student.name }}
+                    </template>
+
+                    <template v-slot:mobile_number="{ row: student }">
+                        {{ student.mobile_number }}
+                    </template>
+
+                    <!-- Group -->
+                    <template v-slot:father_name="{ row: student }">
+                        {{ student.father_name }}
+                    </template>
+
+                    <!-- Display Name -->
+                    <template v-slot:mother_name="{ row: student }">
+                        {{ student.mother_name }}
+                    </template>
+
+                    <template v-slot:email="{ row: student }">
+                        {{ student.email }}
+                    </template>
+
+                    <template v-slot:address="{ row: student }">
+                        {{ student.address }}
+                    </template>
+
+                    <template v-slot:actions="{ row: student }">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <Link v-if="checkPermission('can-edit-student')" :href="route('students.edit', student.id)" class="btn btn-icon btn-flex btn-active-light-primary w-30px h-30px" data-bs-toggle="tooltip" :title="$t('tooltip.title.edit')">
+                                <KTIcon icon-name="pencil" icon-class="fs-3 text-primary" />
+                            </Link>
+                            <!-- Delete -->
+                            <DeleteConfirmationButton v-if="checkPermission('can-delete-student')" iconClass="fs-2" :obj="student" confirmRoute="students.destroy" title="Delete Student" :messageTitle="`${student.name} ?`"/>
+                        </div>
+                    </template>
+                </Datatable>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>
+
+<script setup lang="ts">
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { ref, onMounted,defineProps } from 'vue';
+import Datatable from "@/Components/kt-datatable/KTDataTable.vue";
+import type { Sort } from "@/Components/kt-datatable/table-partials/Models";
+import { MenuComponent } from "@/Assets/ts/components";
+import arraySort from "array-sort";
+import { Link } from '@inertiajs/vue3';
+import KTIcon from "@/Core/helpers/kt-icon/KTIcon.vue";
+import { checkPermission } from "@/Core/helpers/Permission";
+import i18n from '@/Core/plugins/i18n';
+import ChangeStatusButton from '@/Components/Button/ChangeStatusButton.vue';
+import DeleteConfirmationButton from '@/Components/Button/DeleteConfirmationButton.vue';
+
+const { t } = i18n.global;
+
+const props = defineProps({
+    students: Object as() => IStudent[] | undefined,
+    breadcrumbs: Array as() => Breadcrumb[],
+    pageTitle: String,
+});
+
+interface Breadcrumb {
+    url: string;
+    title: string;
+}
+
+interface IStudent {
+    id: number;
+    roll: string;
+    registration: string;
+    name: string;
+    father_name: string;
+    mother_name: string;
+    email: string;
+    address: string;
+    mobile_number: string;
+}
+
+const tableHeader = ref([
+    {
+        columnName: 'Roll',
+        columnLabel: "roll",
+        sortEnabled: true,
+        columnWidth: 80
+    },
+    {
+        columnName: 'Registration',
+        columnLabel: "registration",
+        sortEnabled: true,
+        columnWidth: 80
+    },
+    {
+        columnName: 'Name',
+        columnLabel: "name",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+    {
+        columnName: 'Father Name',
+        columnLabel: "father_name",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+    {
+        columnName: 'Mother Name',
+        columnLabel: "mother_name",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+    {
+        columnName: 'Email',
+        columnLabel: "email",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+    {
+        columnName: 'Mobile Number',
+        columnLabel: "mobile_number",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+    {
+        columnName: t('buttonValue.actions'),
+        columnLabel: "actions",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+]);
+
+const tableData = ref < IStudent[] > ([]);
+const initStudents = ref < IStudent[] > ([]);
+
+onMounted(() => {
+    if (props.students) {
+        initStudents.value = props.students.map(student => ({
+            id: student.id,
+            roll: student.roll,
+            registration: student.registration,
+            name: student.name,
+            email: student.email,
+            father_name: student.father_name,
+            mother_name: student.mother_name,
+            address: student.address,
+            mobile_number: student.mobile_number,
+        }));
+        tableData.value = initStudents.value;
+    }
+});
+
+const search = ref < string > ("");
+const searchData = () => {
+    tableData.value = [...initStudents.value];
+    if (search.value !== "") {
+        tableData.value = tableData.value.filter(item => searchingFunc(item, search.value));
+    }
+    MenuComponent.reinitialization();
+};
+
+const searchingFunc = (obj: any, value: string): boolean => {
+    for (let key in obj) {
+        if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
+            if (obj[key] && obj[key].includes && obj[key].includes(value)) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
+const sortData = (sort: Sort) => {
+    const reverse: boolean = sort.order === "asc";
+    if (sort.label) {
+        arraySort(tableData.value, sort.label, {
+            reverse
+        });
+    }
+};
+</script>

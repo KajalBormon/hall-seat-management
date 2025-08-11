@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StudentController;
 use Inertia\Inertia;
 use App\Http\Middleware\Language;
 use Illuminate\Support\Facades\Route;
@@ -84,21 +85,8 @@ Route::middleware(Language::class)
             Route::patch('change-status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
         });
 
-        Route::get('/clear-cache', function () {
-            Artisan::call('config:clear');
-            Artisan::call('route:clear');
-            Artisan::call('view:clear');
-            Artisan::call('cache:clear');
-
-            return response()->json([
-                'message' => '✅ Cleared: config, route, view, and cache.',
-            ]);
-        });
-
-        Route::get('/run-migrations', function () {
-            \Artisan::call('migrate --force');
-            return 'Migrations Done';
-        });
+        //student related routes
+        Route::resource('students', StudentController::class);
     });
 });
 

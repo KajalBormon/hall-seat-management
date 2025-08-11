@@ -84,13 +84,13 @@ class UserController extends Controller implements HasMiddleware
         $breadcrumbs = Breadcrumbs::generate('userDetails', $user);
         $user = $this->userService->getUserDetails($user);
         $roles = $this->roleService->getActiveRoles();
-        $activityLogs = $this->activityLogService->getActivityLogs($user);
+        // $activityLogs = $this->activityLogService->getActivityLogs($user);
         $authenticationLogs = $this->authenticationLogService->getAuthenticationLogs($user);
         $responseData = [
             'user' => $user,
             'roles' => $roles,
             'breadcrumbs' => $breadcrumbs,
-            'activityLogs' => $activityLogs,
+            // 'activityLogs' => $activityLogs,
             'authenticationLogs' => $authenticationLogs,
             'pageTitle' => __('pageTitle.custom.user.show'),
         ];

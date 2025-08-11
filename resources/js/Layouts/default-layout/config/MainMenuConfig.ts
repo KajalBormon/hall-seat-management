@@ -49,6 +49,32 @@ const sidebarMenuConfig: Array<MenuItem> = [
 
         ],
     },
+
+    {
+        heading: 'Provost',
+        route: "/students",
+        headingRoutes: ["students"],
+        headingPermissions: ["can-view-student"],
+        pages: [
+            {
+                sectionTitle: 'Student Management',
+                route: "/students",
+                keenthemesIcon: "profile-user",
+                bootstrapIcon: "bi-archive",
+                routeArray: ["/students"],
+                routePermissions: ["can-view-student"],
+                sub: [
+                    {
+                        heading: 'Add Student',
+                        route: "/students",
+                        permission: "can-view-student",
+                    },
+
+                ],
+            },
+
+        ],
+    },
 ];
 
 export default sidebarMenuConfig;

@@ -8,6 +8,7 @@ use App\Models\Company\Company;
 use App\Models\FiscalYear;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
+use App\Models\Student;
 use App\Models\Subscription\SubscriptionPlan;
 use App\Models\Subscription\SubscriptionPlanFeature;
 use App\Models\TenantPermission;
@@ -140,218 +141,26 @@ Breadcrumbs::for('myProfile', function (BreadcrumbTrail $trail) {
     $trail->push(__('breadcrumb.custom.user.childInfo.profile'), route('profile.edit'));
 });
 
-// Companies
-Breadcrumbs::for('companies', function (BreadcrumbTrail $trail) {
+//students list
+Breadcrumbs::for('students', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push('Company List', route('companies.index'));
+    $trail->push('Student Management', route('students.index'));
 });
 
-// Add Company
-Breadcrumbs::for('addCompany', function (BreadcrumbTrail $trail) {
-    $trail->parent('companies');
-    $trail->push('Add', route('companies.create'));
+//students list
+Breadcrumbs::for('studentList', function (BreadcrumbTrail $trail) {
+    $trail->parent('students');
+    $trail->push('Students List', route('students.index'));
 });
 
-// Company Onboarding
-Breadcrumbs::for('companyOnboarding', function (BreadcrumbTrail $trail, Company $company) {
-    $trail->parent('companies');
-    $trail->push('Company Onboarding', route('companies.onboarding.index', $company));
+//students list
+Breadcrumbs::for('createStudent', function (BreadcrumbTrail $trail) {
+    $trail->parent('students');
+    $trail->push('Add', route('students.create'));
 });
 
-// Company Details
-Breadcrumbs::for('companyDetails', function (BreadcrumbTrail $trail, Company $company) {
-    $trail->parent('companies');
-    $trail->push('Details', route('companies.show', $company));
-});
-
-//Parent Items
-Breadcrumbs::for('parentItems', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push(__('Items'), route('items.index'));
-});
-
-//Type wise Items
-Breadcrumbs::for('items', function (BreadcrumbTrail $trail, $itemType) {
-    $titles = [
-        'sale' => 'Sale',
-        'purchase' => 'Purchase',
-        'expense' => 'Expense',
-    ];
-    $trail->parent('parentItems');
-    $trail->push($titles[$itemType], route('items.index', ['itemType' => $itemType]));
-});
-
-//Edit items
-Breadcrumbs::for('editItem', function (BreadcrumbTrail $trail, $itemType, Item $item) {
-
-    $trail->parent('items', $itemType);
-    $trail->push('Edit ', route('items.edit',$item));
-});
-
-//Brand Menu
-Breadcrumbs::for('allBrands', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push(__('breadcrumb.custom.brand.parentInfo'), route('brands.index'));
-});
-
-//Brand List
-Breadcrumbs::for('brands', function (BreadcrumbTrail $trail) {
-    $trail->parent('allBrands');
-    $trail->push(__('breadcrumb.custom.brand.childInfo.index'), route('brands.index'));
-});
-
-//Add Brand
-Breadcrumbs::for('addBrand', function (BreadcrumbTrail $trail) {
-    $trail->parent('brands');
-    $trail->push(__('breadcrumb.custom.brand.childInfo.create'), route('brands.create'));
-});
-
-//Edit Brand
-Breadcrumbs::for('editBrand', function (BreadcrumbTrail $trail, Brand $brand) {
-    $trail->parent('brands');
-    $trail->push(__('breadcrumb.custom.brand.childInfo.edit'), route('brands.edit', $brand));
-});
-
-// Job Position List
-Breadcrumbs::for('jobPositions', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push('Job Position', route('job-positions.index'));
-});
-
-// Fiscal Year List
-Breadcrumbs::for('fiscalYears', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push('Fiscal Years', route('fiscal-years.index'));
-});
-
-// Add Fiscal Year
-Breadcrumbs::for('addFiscalYear', function (BreadcrumbTrail $trail) {
-    $trail->parent('fiscalYears');
-    $trail->push('Add Fiscal Year', route('fiscal-years.create'));
-});
-
-// Edit Fiscal Year
-Breadcrumbs::for('editFiscalYear', function (BreadcrumbTrail $trail, FiscalYear $fiscalYear) {
-    $trail->parent('fiscalYears');
-    $trail->push('Edit Fiscal Year', route('fiscal-years.edit', $fiscalYear));
-});
-
-// Payment Method List
-Breadcrumbs::for('paymentMethods', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push('Payment Methods', route('payment-methods.index'));
-});
-
-// Add Payment Method
-Breadcrumbs::for('addPaymentMethod', function (BreadcrumbTrail $trail) {
-    $trail->parent('paymentMethods');
-    $trail->push('Add', route('payment-methods.create'));
-});
-
-// Edit Payment Method
-Breadcrumbs::for('editPaymentMethod', function (BreadcrumbTrail $trail, PaymentMethod $paymentMethod) {
-    $trail->parent('paymentMethods');
-    $trail->push('Edit', route('payment-methods.edit', $paymentMethod));
-});
-
-// Subscription
-Breadcrumbs::for('subscription', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push('Subscription', route('subscription-plans.index'));
-});
-
-// Subscription Plan List
-Breadcrumbs::for('subscriptionPlans', function (BreadcrumbTrail $trail) {
-    $trail->parent('subscription');
-    $trail->push('Subscription Plan List', route('subscription-plans.index'));
-});
-
-// Add Subscription Plan
-Breadcrumbs::for('addSubscriptionPlan', function (BreadcrumbTrail $trail) {
-    $trail->parent('subscriptionPlans');
-    $trail->push('Add', route('subscription-plans.create'));
-});
-
-// Edit Subscription Plan
-Breadcrumbs::for('editSubscriptionPlan', function (BreadcrumbTrail $trail, SubscriptionPlan $subscriptionPlan) {
-    $trail->parent('subscriptionPlans');
-    $trail->push('Edit', route('subscription-plans.edit', $subscriptionPlan));
-});
-
-// Subscription Plan Details
-Breadcrumbs::for('subscriptionPlanDetails', function (BreadcrumbTrail $trail, SubscriptionPlan $subscriptionPlan) {
-    $trail->parent('subscriptionPlans');
-    $trail->push('Details', route('subscription-plans.show', $subscriptionPlan));
-});
-
-// Subscription Plan Feature List
-Breadcrumbs::for('subscriptionPlanFeatures', function (BreadcrumbTrail $trail) {
-    $trail->parent('subscription');
-    $trail->push('Subscription Plan Feature List', route('subscription-plan-features.index'));
-});
-
-// Add Subscription Plan Feature
-Breadcrumbs::for('addSubscriptionPlanFeature', function (BreadcrumbTrail $trail) {
-    $trail->parent('subscriptionPlanFeatures');
-    $trail->push('Add', route('subscription-plan-features.create'));
-});
-
-// Edit Subscription Plan Feature
-Breadcrumbs::for('editSubscriptionPlanFeature', function (BreadcrumbTrail $trail, SubscriptionPlanFeature $subscriptionPlanFeature) {
-    $trail->parent('subscriptionPlanFeatures');
-    $trail->push('Edit', route('subscription-plan-features.edit', $subscriptionPlanFeature));
-});
-
-// Tenant Role and Permission
-Breadcrumbs::for('tenant', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push('Tenant Management', route('tenant-permissions.index'));
-});
-
-// Tenant Permission
-Breadcrumbs::for('tenantPermissions', function (BreadcrumbTrail $trail) {
-    $trail->parent('tenant');
-    $trail->push('Tenant Permissions', route('tenant-permissions.index'));
-});
-
-// Tenant Permission List
-Breadcrumbs::for('addTenantPermission', function (BreadcrumbTrail $trail) {
-    $trail->parent('tenantPermissions');
-    $trail->push('Add', route('tenant-permissions.create'));
-});
-
-// Edit Tenant Permission
-Breadcrumbs::for('editTenantPermission', function (BreadcrumbTrail $trail, TenantPermission $tenantPermission) {
-    $trail->parent('tenantPermissions');
-    $trail->push('Edit', route('tenant-permissions.edit', $tenantPermission));
-});
-
-// Tenant Roles
-Breadcrumbs::for('tenantRoles', function (BreadcrumbTrail $trail) {
-    $trail->parent('tenant');
-    $trail->push('Tenant Roles', route('tenant-roles.index'));
-});
-
-// Tenant Role List
-Breadcrumbs::for('addTenantRoles', function (BreadcrumbTrail $trail) {
-    $trail->parent('tenantRoles');
-    $trail->push('Add', route('tenant-roles.create'));
-});
-
-// Edit Tenant Role
-Breadcrumbs::for('editTenantRole', function (BreadcrumbTrail $trail, TenantRole $tenantRole) {
-    $trail->parent('tenantRoles');
-    $trail->push('Edit', route('tenant-roles.edit', $tenantRole));
-});
-
-// Edit Tenant Role
-Breadcrumbs::for('tenantRoleDetails', function (BreadcrumbTrail $trail, TenantRole $tenantRole) {
-    $trail->parent('tenantRoles');
-    $trail->push('Details', route('tenant-roles.edit', $tenantRole));
-});
-
-// Departure Reason List
-Breadcrumbs::for('departureReasons', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push('Departure Reason', route('departure-reasons.index'));
+//students list
+Breadcrumbs::for('editStudent', function (BreadcrumbTrail $trail, Student $student) {
+    $trail->parent('students');
+    $trail->push('Edit', route('students.edit', $student));
 });
