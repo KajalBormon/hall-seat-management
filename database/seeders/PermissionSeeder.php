@@ -179,6 +179,38 @@ class PermissionSeeder extends Seeder
                 'group_name' => 'Student Management',
                 'is_active' => true,
             ],
+            [
+                'id' => 21,
+                'display_name' => 'ডিপার্টমেন্ট দেখা',
+                'name' => 'can-view-department',
+                'guard_name' => 'web',
+                'group_name' => 'Department Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 22,
+                'display_name' => 'ডিপার্টমেন্ট তৈরী করা',
+                'name' => 'can-create-department',
+                'guard_name' => 'web',
+                'group_name' => 'Department Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 23,
+                'display_name' => 'ডিপার্টমেন্ট আপডেট করা',
+                'name' => 'can-edit-department',
+                'guard_name' => 'web',
+                'group_name' => 'Department Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 24,
+                'display_name' => 'ডিপার্টমেন্ট ডিলিট করা',
+                'name' => 'can-delete-department',
+                'guard_name' => 'web',
+                'group_name' => 'Department Management',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($permissions as $permission) {

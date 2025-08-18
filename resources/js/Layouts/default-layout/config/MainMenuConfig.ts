@@ -53,8 +53,8 @@ const sidebarMenuConfig: Array<MenuItem> = [
     {
         heading: 'Provost',
         route: "/students",
-        headingRoutes: ["students"],
-        headingPermissions: ["can-view-student"],
+        headingRoutes: ["students", 'departments'],
+        headingPermissions: ["can-view-student", "can-view-department"],
         pages: [
             {
                 sectionTitle: 'Student Management',
@@ -71,6 +71,14 @@ const sidebarMenuConfig: Array<MenuItem> = [
                     },
 
                 ],
+            },
+
+            {
+                heading: 'Departments',
+                route: "/departments",
+                routePermissions: ["can-view-department"],
+                keenthemesIcon: "bank",
+                bootstrapIcon: "bi-archive",
             },
 
         ],

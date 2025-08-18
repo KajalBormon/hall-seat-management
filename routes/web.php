@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StudentController;
+use App\Models\Department;
 use Inertia\Inertia;
 use App\Http\Middleware\Language;
 use Illuminate\Support\Facades\Route;
@@ -87,6 +89,10 @@ Route::middleware(Language::class)
 
         //student related routes
         Route::resource('students', StudentController::class);
+
+        //Department related routes
+        Route::resource('departments', DepartmentController::class);
+        Route::patch('/departments/{department}/change-status', [DepartmentController::class, 'changeStatus'])->name('departments.changeStatus');
     });
 });
 

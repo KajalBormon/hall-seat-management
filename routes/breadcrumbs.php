@@ -3,8 +3,10 @@
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
 
+use App\Http\Controllers\DepartmentController;
 use App\Models\Brand;
 use App\Models\Company\Company;
+use App\Models\Department;
 use App\Models\FiscalYear;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
@@ -153,14 +155,33 @@ Breadcrumbs::for('studentList', function (BreadcrumbTrail $trail) {
     $trail->push('Students List', route('students.index'));
 });
 
-//students list
+//Create students
 Breadcrumbs::for('createStudent', function (BreadcrumbTrail $trail) {
     $trail->parent('students');
     $trail->push('Add', route('students.create'));
 });
 
-//students list
+//Edit students
 Breadcrumbs::for('editStudent', function (BreadcrumbTrail $trail, Student $student) {
     $trail->parent('students');
     $trail->push('Edit', route('students.edit', $student));
 });
+
+//Department list
+Breadcrumbs::for('departments', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Departments', route('departments.index'));
+});
+
+//Create Department
+Breadcrumbs::for('createDepartment', function (BreadcrumbTrail $trail) {
+    $trail->parent('departments');
+    $trail->push('Add', route('departments.create'));
+});
+
+//Edit Department
+Breadcrumbs::for('editDepartment', function (BreadcrumbTrail $trail, Department $department) {
+    $trail->parent('departments');
+    $trail->push('Edit', route('departments.edit', $department));
+});
+

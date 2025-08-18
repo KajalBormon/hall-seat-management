@@ -32,8 +32,6 @@ class RoleService extends BaseModelService
             if ($role) {
                 $role->syncPermissions($validatedData['permission_ids']);
 
-                // Add the activity to activity_logs table
-                $this->logActivity($role, 'created', 'created');
             }
             return $role;
         });
@@ -50,16 +48,6 @@ class RoleService extends BaseModelService
             $isPermissionRemoved = array_diff($this->permissionIdsToArray($oldRole), $this->permissionIdsToArray($role));
             $isPermissionAdded = array_diff($this->permissionIdsToArray($role), $this->permissionIdsToArray($oldRole));
 
-            if (($oldRole->name != $role->name) && ($isPermissionRemoved || $isPermissionAdded)) {
-                // log if role name and permissions are updated
-                $this->logActivity($role, 'updated', 'roleAndPermissions', $oldRole);
-            } else if ($oldRole->name != $role->name) {
-                // log if role name is updated
-                $this->logActivity($role, 'updated', 'name', $oldRole);
-            } else if ($isPermissionRemoved || $isPermissionAdded) {
-                // log if permissions are updated
-                $this->logActivity($role, 'updated', 'permissions', $oldRole);
-            }
             return $role;
         });
         return $result;
@@ -79,9 +67,6 @@ class RoleService extends BaseModelService
             if ($isDeleted) {
                 $role->permissions()->detach();
                 $role->users()->detach();
-
-                // Add the activity to activity_logs table
-                $this->logActivity($role, 'deleted', 'deleted', $oldRole);
             }
             return $isDeleted;
         });
@@ -144,8 +129,6 @@ class RoleService extends BaseModelService
             $role->update(['is_active' => $isActive]);
             $role->users()->detach();
 
-            // Add the activity to activity_logs table
-            $this->logActivity($role, 'updated', 'status', $oldRole);
             return $role;
         });
         return $result;
@@ -165,40 +148,10 @@ class RoleService extends BaseModelService
                 'name' => $user->name,
                 'email' => $user->email,
             ];
-            activity()
-                ->performedOn($user)
-                ->withProperties([
-                    'old' => $oldUser
-                ])
-                ->event('deleted')
-                ->log('Removed user - ' . $user->name . ' from role - ' . $role->name);
+
             return $role;
         });
         return $result;
-    }
-
-    protected function logActivity(Role $role, $event, $log, $oldRole = null)
-    {
-        if ($event === 'deleted' || $event === 'updated') {
-            $properties['old'] = $this->extractRoleProperties($oldRole);
-        }
-        if ($event === 'created' || $event === 'updated') {
-            $properties['attributes'] = $this->extractRoleProperties($role, $event);
-        }
-        $messageList = [
-            'created' => "Created new role - $role->name",
-            'roleAndPermissions' => "Updated the role and its permissions - $role->name",
-            'name' => "Updated the role - $role->name",
-            'permissions' => "Updated the permissions of - $role->name",
-            'deleted' => "Deleted the role - $role->name",
-            'status' => "Changed status of the role - $role->name"
-        ];
-        $message = $messageList[$log];
-        activity()
-            ->performedOn($role)
-            ->event($event)
-            ->withProperties($properties)
-            ->log($message);
     }
 
     private function permissionIdsToArray(Role $role)

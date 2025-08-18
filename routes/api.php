@@ -12,4 +12,4 @@ Route::prefix('v1')->group(function () {
 
 });
 
-Route::get('/health-check', [HealthCheckController::class, 'index']);
+// Route::get('/health-check', [HealthCheckController::class, 'index']);
