@@ -69,7 +69,7 @@
                         <div class="row mb-5 g-4">
                             <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
-                                    <label class="fs-5 fw-semibold mb-2">Mobile Number</label>
+                                    <label class="required fs-5 fw-semibold mb-2">Mobile Number</label>
                                     <Field type="text" class="form-control form-control-lg form-control-solid" placeholder="Mobile Number" name="mobile_number" v-model="formData.mobile_number"/>
                                     <ErrorMessage :errorMessage="formData.errors.mobile_number" />
                                 </div>

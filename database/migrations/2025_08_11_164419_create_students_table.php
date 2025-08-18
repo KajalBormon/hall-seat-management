@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('roll')->unique();
             $table->string('registration')->unique();
             $table->string('name');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->string('mobile_number')->unique();
             $table->string('address')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
             $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();

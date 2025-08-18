@@ -19,17 +19,19 @@ class UpdateStudentRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+   public function rules(): array
     {
+        $studentId = $this->route('student')->id;
+
         return [
-            'roll' => 'required|integer|unique:students,roll',
-            'registration' => 'required|string|max:20|unique:students,registration',
-            'name' => 'required|string|max:255',
-            'father_name' => 'nullable|string|max:255',
-            'mother_name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:students,email',
-            'mobile_number' => 'required|unique|string|max:11',
-            'address' => 'nullable|string|max:255',
+            'roll'          => 'required|integer|unique:students,roll,' . $studentId,
+            'registration'  => 'required|string|max:20|unique:students,registration,' . $studentId,
+            'name'          => 'required|string|max:255',
+            'father_name'   => 'nullable|string|max:255',
+            'mother_name'   => 'nullable|string|max:255',
+            'email'         => 'nullable|email|unique:students,email,' . $studentId,
+            'mobile_number' => 'required|string|max:11|unique:students,mobile_number,' . $studentId,
+            'address'       => 'nullable|string|max:255',
         ];
     }
 

@@ -42,7 +42,7 @@
                                 @submit="onSubmitLogin">
                                 <!--begin::Heading-->
                                 <div class="text-center mb-11">
-                                    <img alt="Logo" :src="getAssetPath('/media/logos/nonditosoft-logo.png')"
+                                    <img alt="Logo" :src="getAssetPath('/media/logos/jkkniu-logo.png')"
                                         class="h-60px h-lg-75px"/>
                                     <h1 class="text-gray-900 fw-bolder mb-3">{{ $t('auth.login.title') }}</h1>
                                 </div>

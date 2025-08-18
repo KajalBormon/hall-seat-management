@@ -59,7 +59,7 @@ const sidebarMenuConfig: Array<MenuItem> = [
             {
                 sectionTitle: 'Student Management',
                 route: "/students",
-                keenthemesIcon: "profile-user",
+                keenthemesIcon: "people",
                 bootstrapIcon: "bi-archive",
                 routeArray: ["/students"],
                 routePermissions: ["can-view-student"],

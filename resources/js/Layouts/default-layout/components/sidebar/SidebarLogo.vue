@@ -9,18 +9,18 @@
           (themeMode === 'dark' && layout === 'light-sidebar')
         "
         alt="Logo"
-        :src="getAssetPath('/media/logos/nonditosoft-logo.png')"
+        :src="getAssetPath('/media/logos/jkkniu-logo.png')"
         class="h-40px app-sidebar-logo-default"
       />
       <img
         v-if="themeMode === 'light' && layout === 'light-sidebar'"
         alt="Logo"
-        :src="getAssetPath('/media/logos/nonditosoft-logo.png')"
+        :src="getAssetPath('/media/logos/jkkniu-logo.png')"
         class="h-40px app-sidebar-logo-default"
       />
       <img
         alt="Logo"
-        :src="getAssetPath('/media/logos/nonditosoft-icon.png')"
+        :src="getAssetPath('/media/logos/jkkniu-logo.png')"
         class="h-40px app-sidebar-logo-minimize"
       />
     </a>

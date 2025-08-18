@@ -31,7 +31,7 @@ class RoleSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'name' => Constants::ROLE_ADMIN,
+                'name' => Constants::ROLE_HALL_PROVOST,
                 'guard_name' => 'web',
                 'is_editable' => true,
                 'is_deletable' => false,
@@ -40,7 +40,7 @@ class RoleSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'name' => Constants::ROLE_EMPLOYEE,
+                'name' => Constants::ROLE_STUDENT,
                 'guard_name' => 'web',
                 'is_editable' => true,
                 'is_deletable' => false,
@@ -49,7 +49,7 @@ class RoleSeeder extends Seeder
             ],
             [
                 'id' => 4,
-                'name' => Constants::ROLE_HR,
+                'name' => Constants::ROLE_HOUSE_TUTOR,
                 'guard_name' => 'web',
                 'is_editable' => true,
                 'is_deletable' => false,

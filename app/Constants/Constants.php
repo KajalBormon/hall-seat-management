@@ -5,11 +5,10 @@ namespace App\Constants;
 class Constants
 {
     public const ROLE_SUPER_ADMIN = 'Super Admin';
-    public const ROLE_ADMIN = 'Admin';
-    public const ROLE_HR = 'HR';
+    public const ROLE_HALL_PROVOST = 'Hall Provost';
+    public const ROLE_STUDENT = 'Student';
     public const ROLE_EMPLOYEE = 'Employee';
-    public const ROLE_MANAGER = 'Manager';
-    public const ROLE_MUHURI = 'Muhuri';
+    public const ROLE_HOUSE_TUTOR = 'House Tutor';
     public const MONTHLY = 'monthly';
     public const YEARLY = 'yearly';
     public const MONTHS = 'months';

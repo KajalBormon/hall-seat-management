@@ -64,7 +64,7 @@ class StudentController extends Controller implements HasMiddleware
     public function store(CreateStudentRequest $request)
     {
         $validatedData = $request->validated();
-        $student = $this->studentService->create($validatedData);
+        $student = $this->studentService->createStudent($validatedData);
         $status = $student ? 'success' : 'error';
         $message = $student ? 'Student created successfully.' : 'Failed to create student.';
         return redirect()->route('students.index')->with($status, $message);
@@ -98,7 +98,7 @@ class StudentController extends Controller implements HasMiddleware
     public function update(UpdateStudentRequest $request, Student $student)
     {
         $validatedData = $request->validated();
-        $student = $this->studentService->update($student,$validatedData);
+        $student = $this->studentService->updateStudent($student,$validatedData);
         $status = $student ? 'success' : 'error';
         $message = $student ? 'Student updated successfully.' : 'Failed to updated student.';
         return redirect()->route('students.index')->with($status, $message);
@@ -109,9 +109,9 @@ class StudentController extends Controller implements HasMiddleware
      */
     public function destroy(Student $student)
     {
-        $student->delete();
-        $status = 'success';
-        $message = 'Student deleted successfully.';
+        $isDeleted = $this->studentService->deleteStudent($student);
+        $status = $isDeleted ? 'success' : 'error';
+        $message = $isDeleted ? 'Student deleted successfully.' : 'Failed to delete student.';
         return redirect()->route('students.index')->with($status, $message);
     }
 }
