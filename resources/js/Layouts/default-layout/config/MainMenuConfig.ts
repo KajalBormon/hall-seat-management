@@ -65,7 +65,7 @@ const sidebarMenuConfig: Array<MenuItem> = [
                 routePermissions: ["can-view-student"],
                 sub: [
                     {
-                        heading: 'Add Student',
+                        heading: 'Students',
                         route: "/students",
                         permission: "can-view-student",
                     },
@@ -77,8 +77,8 @@ const sidebarMenuConfig: Array<MenuItem> = [
                 heading: 'Departments',
                 route: "/departments",
                 routePermissions: ["can-view-department"],
-                keenthemesIcon: "bank",
-                bootstrapIcon: "bi-archive",
+                // keenthemesIcon: "bank",
+                bootstrapIcon: "bi-buildings-fill",
             },
 
         ],
