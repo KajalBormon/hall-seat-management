@@ -54,11 +54,10 @@ class UserService extends BaseModelService
             if ($validatedData['roles']) {
                 $user->assignRole($validatedData['roles']);
             }
-            $this->logActivity($user, 'created', 'created');
             return $user;
         });
 
-        return $result ?? false;
+        return $result;
     }
 
     public function updateUser(User $user, $validatedData)
@@ -77,19 +76,7 @@ class UserService extends BaseModelService
             $isRoleRemoved = array_diff($this->roleIdsToArray($oldUser), $this->roleIdsToArray($user));
             $isRoleAdded = array_diff($this->roleIdsToArray($user), $this->roleIdsToArray($oldUser));
 
-            if (($oldUser->name != $updatedName || $oldUser->email != $updatedEmail) && ($isRoleRemoved || $isRoleAdded)) {
-                // log if user name or email and roles are updated
-                $this->logActivity($user, 'updated', 'userAndRoles', $oldUser);
-            } else if ($oldUser->email != $updatedEmail && $oldUser->name == $updatedName) {
-                // log if user email is updated
-                $this->logActivity($user, 'updated', 'email', $oldUser);
-            } else if ($oldUser->name != $updatedName || $oldUser->email != $updatedEmail) {
-                // log if user name or email is updated
-                $this->logActivity($user, 'updated', 'user', $oldUser);
-            } else if ($isRoleRemoved || $isRoleAdded) {
-                // log if user roles are updated
-                $this->logActivity($user, 'updated', 'roles', $oldUser);
-            }
+
             return $user;
         });
         return $result ?? false;
@@ -108,7 +95,6 @@ class UserService extends BaseModelService
             $isDeleted = $this->delete($user->id);
             if ($isDeleted) {
                 $user->roles()->detach();
-                $this->logActivity($user, 'deleted', 'deleted', $oldUser);
             }
             return true;
         });
@@ -167,7 +153,6 @@ class UserService extends BaseModelService
         $oldUser = clone $user;
         $password = Hash::make($validatedData['password']);
         $user->update(['password' => $password]);
-        $this->logActivity($user, 'updated', 'password', $oldUser);
         return $user;
     }
 
@@ -176,35 +161,7 @@ class UserService extends BaseModelService
         $oldUser = clone $user;
         $isActive = ($isActive == true) ? false : true;
         $user->update(['is_active' => $isActive]);
-        $this->logActivity($user, 'updated', 'status', $oldUser);
         return $user;
-    }
-
-    protected function logActivity(User $user, $event, $log, $oldUser = null)
-    {
-        if ($event === 'deleted' || $event === 'updated') {
-            $properties['old'] = $this->extractUserProperties($oldUser);
-        }
-        if ($event === 'created' || $event === 'updated') {
-            $properties['attributes'] = $this->extractUserProperties($user, $event);
-        }
-
-        $messageList = [
-            'created' => "Created new user - $user->name",
-            'userAndRoles' => "Updated the user and its roles - $user->name",
-            'user' => "Updated the user - $user->name",
-            'email' => "Updated the user email - $user->name",
-            'roles' => "Updated the user roles - $user->name",
-            'deleted' => "Deleted the user - $user->name",
-            'status' => "Changed the status of the user - $user->name",
-            'password' => "Changed the password of the user - $user->name"
-        ];
-        $message = $messageList[$log];
-        activity()
-            ->performedOn($user)
-            ->event($event)
-            ->withProperties($properties)
-            ->log($message);
     }
 
     private function roleIdsToArray(User $user)
