@@ -1,8 +1,8 @@
-## Muhuri Central Admin
+## Hall Management System
 
 ### Overview:
 
-The Muhuri Central Admin application plays a central role in your Muhuri SaaS solution. It provides functionality for onboarding companies, managing their basic information, and synchronizing data across their respective MUHURI databases.
+The Hall Management System is a standalone application designed to manage halls, rooms, and seat plans in an organized way. It provides administrators with tools to create halls, configure rooms, assign seats (e.g., 101-a, 101-b, etc.), and manage hall-related operations efficiently.
 
 ### Installation:
 
@@ -22,12 +22,12 @@ The Muhuri Central Admin application plays a central role in your Muhuri SaaS so
    
 2. Clone the Repository:
      ```Bash
-     git clone git@bitbucket.org:nonditosoft/muhuri-central-admin.git
+     git clone https://github.com/KajalBormon/hall-seat-management.git
      ```  
 
 3. Install Dependencies:
      ```Bash
-     cd muhuri-central-admin
+     cd hall-seat-management
      composer install
      npm install
      ```
@@ -65,51 +65,12 @@ The Muhuri Central Admin application plays a central role in your Muhuri SaaS so
 
    Run the following command to start the application:
     ```bash
-    php artisan serve --port=8001
+    php artisan serve --port=8000
     ```
-   The application will be accessible at `http://localhost:8001`.
+   The application will be accessible at `http://localhost:8000`.
    
-9. **Muhuri Application Integration:**
-   Configure how the Central Admin application interacts with the core Muhuri application for data synchronization purposes. This may involve defined workflows, API calls, or other mechanisms.
-
-10. **Multi-Tenant Server Setup:**
-    
-    ***Step-1: Start the Tenant Server:***
-    
-    Run the tenant server by opening http://localhost:8000.
-
-    
-    ***Step-2: Start the Central Admin Server:***
-    
-    Open another terminal and start the central admin server at http://localhost:8001. Ensure the .env file includes the following:
-
-    ```Bash
-    TENANT_API_URL=http://localhost:8000
-    MUHURI_WEB_API_URL=http://localhost:8002
-    VITE_APP_NAME="${APP_NAME}"
-    MUHURI_WEB_API_KEY=u5UCpkywTxKpA4FwjFL7yHJ8DpnxxqHS1BRO86Gpt8M
-    API_KEY=u5UCpkywTxKpA4FwjFL7yHJ8DpnxxqHS1BRO86Gpt8M
-    VITE_APP_URL=http://localhost:8001
-    ```
-
-    ***Run the Company Onboarding Jobs***
-
-    To complete the company onboarding process, run the following command:
-
-    ```Bash
-    php artisan queue:work
-    ```
-
-    ***Step-3: Start the Web Server:***
-    
-    Open the last terminal and start the web server at http://localhost:8002. Ensure the .env file is configured as follows:
-
-    ```Bash
-    TENANT_API_URL=http://127.0.0.1:8000
-    CENTRAL_ADMIN_API_URL=http://127.0.0.1:8001
-    CENTRAL_ADMIN_API_KEY=u5UCpkywTxKpA4FwjFL7yHJ8DpnxxqHS1BRO86Gpt8M
-    API_KEY=u5UCpkywTxKpA4FwjFL7yHJ8DpnxxqHS1BRO86Gpt8M
-    ```
+9. **Administrator Access:**  
+   Log in with an administrator account to start managing halls, rooms, and seat plans. The dashboard provides tools for creating new rooms, auto-generating seat layouts, and keeping operations organized.
 
 ### Code Structure
 - Have to strictly follow SOLID and DRY principles.
@@ -119,4 +80,8 @@ The Muhuri Central Admin application plays a central role in your Muhuri SaaS so
 
 ### Usage:
 
-The Central Admin application is typically used by authorized personnel to manage company onboarding, data synchronization, and potentially other administrative tasks.
+The Hall Management System is used by administrators to:
+- Manage halls and rooms  
+- Define and organize seat plans (e.g., 101-a, 101-b, 101-c, 101-d)  
+- Keep hall operations structured and efficient  
+

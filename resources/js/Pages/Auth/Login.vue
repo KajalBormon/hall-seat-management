@@ -9,21 +9,19 @@
                 <!--begin::Content-->
                 <div class="d-flex flex-column flex-center pb-0 pb-lg-10 p-10 w-100">
                     <!--begin::Image-->
-                    <img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20"
-                        :src="getAssetPath('/media/auth/agency.png')" alt=""/>
+                    <img class="theme-light-show mx-auto mw-100 mb-10 mb-lg-20"
+                        :src="getAssetPath('/media/auth/hall.jpeg')" alt=""/>
                     <img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20"
                         :src="getAssetPath('/media/auth/agency-dark.png')" alt=""/>
                     <!--end::Image-->
                     <!--begin::Title-->
-                    <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">Fast, Efficient and Productive</h1>
+                    <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">Hall Management System</h1>
                     <!--end::Title-->
                     <!--begin::Text-->
-                    <div class="text-gray-600 fs-base text-center fw-semibold">In this kind of post,
-                        <a href="#" class="opacity-75-hover text-primary me-1">the blogger</a>introduces a person
-                        they’ve interviewed
-                        <br/>and provides some background information about
-                        <a href="#" class="opacity-75-hover text-primary me-1">the interviewee</a>and their
-                        <br/>work following this is a transcript of the interview.
+                    <div class="text-gray-600 fs-base text-center fw-semibold">
+                        Easily create halls, assign room numbers, and auto-generate seat plans
+                        <br/>such as <span class="text-primary">101-a, 101-b, 101-c, 101-d</span>.
+                        <br/>Keep your hall operations organized, efficient, and hassle-free.
                     </div>
                     <!--end::Text-->
                 </div>
@@ -81,30 +79,44 @@
                             </VForm>
                             <!--end::Form-->
                             <!-- Customize Login Page -->
-                            <div class="card card-flush">
-                                <div class="card-header">
-                                    <h3 class="card-title">Account login credentials</h3>
+                            <div class="card card-flush border">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h3 class="card-title fw-bold mb-0">Account Login Credentials</h3>
+                                    <span class="badge badge-light-primary">Secure Access</span>
                                 </div>
+
                                 <div class="card-body pt-0">
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5">
-                                        <tbody>
-                                            <tr>
-                                                <td class="fw-bold">Admin</td>
-                                                <td>admin@example.com</td>
-                                                <td>12345</td>
-                                                <td>
-                                                    <button
-                                                    type="button"
-                                                    class="btn btn-icon btn-light btn-sm"
-                                                    title="Autofill login"
-                                                    @click="fillCredentials('admin@example.com', '12345')"
-                                                    >
-                                                    <i class="ki-duotone ki-copy fs-2"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover align-middle fs-6 gy-4">
+                                            <thead class="text-muted bg-light">
+                                                <tr>
+                                                    <th style="width: 20%">Role</th>
+                                                    <th style="width: 30%">Email</th>
+                                                    <th style="width: 30%">Password</th>
+                                                    <th class="text-center" style="width: 20%">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="fw-semibold text-dark">Admin</td>
+                                                    <td><code>admin@example.com</code></td>
+                                                    <td><code>12345</code></td>
+                                                    <td class="text-center">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm btn-light-primary"
+                                                            title="Autofill login"
+                                                            @click="fillCredentials('admin@example.com', '12345')"
+                                                        >
+                                                            <i class="ki-duotone ki-copy fs-4 me-1"></i>
+                                                            Autofill
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <!-- You can duplicate this <tr> for more credentials -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
