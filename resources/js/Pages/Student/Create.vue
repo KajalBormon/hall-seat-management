@@ -15,7 +15,7 @@
                     <!--begin::Card body-->
                     <div class="card-body border-top p-9">
                         <!-- Name -->
-                        <div class="row mb-5 g-4">
+                        <div class="row mb-2 g-4">
                             <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">Roll</label>
@@ -32,7 +32,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-5 g-4">
+                        <div class="row mb-2 g-4">
                             <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">Name</label>
@@ -40,16 +40,22 @@
                                     <ErrorMessage :errorMessage="formData.errors.name" />
                                 </div>
                             </div>
-                                <!-- Group Name -->
                             <div class="col-md-6 fv-row">
-                                <div class="d-flex flex-column mb-5 fv-row">
-                                    <label class="fs-5 fw-semibold mb-2">Email</label>
-                                    <Field type="text" class="form-control form-control-lg form-control-solid" placeholder="Student Email" name="email" v-model="formData.email"/>
-                                    <ErrorMessage :errorMessage="formData.errors.email" />
+                                <div lass="mb-5 fv-row">
+                                    <label class="required fs-5 fw-semibold mb-2">Department</label>
+                                    <Multiselect
+                                        placeholder="Select Department"
+                                        v-model="formData.department_id"
+                                        :searchable="true"
+                                        :options="allDepartments"
+                                        label="name"
+                                        trackBy="value"
+                                    />
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 g-4">
+
+                        <div class="row mb-2 g-4">
                             <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="fs-5 fw-semibold mb-2">Father Name</label>
@@ -57,7 +63,8 @@
                                     <ErrorMessage :errorMessage="formData.errors.father_name" />
                                 </div>
                             </div>
-                                <!-- Group Name -->
+
+                            <!-- Group Name -->
                             <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="fs-5 fw-semibold mb-2">Mother Name</label>
@@ -66,7 +73,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 g-4">
+
+                        <div class="row mb-2 g-4">
+                            <div class="col-md-6 fv-row">
+                                <div class="d-flex flex-column mb-5 fv-row">
+                                    <label class="fs-5 fw-semibold mb-2">Email</label>
+                                    <Field type="text" class="form-control form-control-lg form-control-solid" placeholder="Student Email" name="email" v-model="formData.email"/>
+                                    <ErrorMessage :errorMessage="formData.errors.email" />
+                                </div>
+                            </div>
+
                             <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">Mobile Number</label>
@@ -74,13 +90,13 @@
                                     <ErrorMessage :errorMessage="formData.errors.mobile_number" />
                                 </div>
                             </div>
-                                <!-- Group Name -->
-                            <div class="col-md-6 fv-row">
-                                <div class="d-flex flex-column mb-5 fv-row">
-                                    <label class="fs-5 fw-semibold mb-2">Address</label>
-                                    <Field type="text" class="form-control form-control-lg form-control-solid" placeholder="Address" name="address" v-model="formData.address"/>
-                                    <ErrorMessage :errorMessage="formData.errors.address" />
-                                </div>
+                        </div>
+
+                        <div class="col-md-12 fv-row">
+                            <div class="d-flex flex-column mb-5 fv-row">
+                                <label class="fs-5 fw-semibold mb-2">Address</label>
+                                <Field type="text" class="form-control form-control-lg form-control-solid" placeholder="Address" name="address" v-model="formData.address"/>
+                                <ErrorMessage :errorMessage="formData.errors.address" />
                             </div>
                         </div>
                     </div>
@@ -107,6 +123,7 @@ import { ref } from 'vue';
 
 const props = defineProps({
     student: Object,
+    departments: Object,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
@@ -121,6 +138,7 @@ const formData = useForm({
     roll: props.student?.roll || '',
     registration: props.student?.registration || '',
     name: props.student?.name || '',
+    department_id: props.student?.department_id || '',
     email: props.student?.email || '',
     father_name: props.student?.father_name || '',
     mother_name: props.student?.mother_name || '',
@@ -128,16 +146,33 @@ const formData = useForm({
     mobile_number: props.student?.mobile_number || '',
 });
 
+const allDepartments = ref<Array<any>>([]);
+if (Array.isArray(props.departments) && props.departments.length > 0) {
+    allDepartments.value = props.departments.map(dept => ({value: dept.id, name:dept.name}));
+}
+
 const submit = () => {
     if (props.student?.id) {
         // for updating permission
         formData.put(route('students.update', props.student?.id), {
             preserveScroll: true,
+            onSuccess: () => {
+                console.log("Student updated successfully!");
+            },
+            onError: (errors) => {
+                console.error("Validation errors:", errors);
+            },
         });
     } else {
         // for adding new permission
         formData.post(route('students.store'), {
             preserveScroll: true,
+            onSuccess: () => {
+                console.log("Student created successfully!");
+            },
+            onError: (errors) => {
+                console.error("Validation errors:", errors);
+            },
         });
     }
 };

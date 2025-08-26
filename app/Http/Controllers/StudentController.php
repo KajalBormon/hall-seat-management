@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Student\CreateStudentRequest;
 use App\Http\Requests\Student\UpdateStudentRequest;
 use App\Models\Student;
+use App\Services\DepartmentService;
 use App\Services\StudentService;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -13,10 +14,12 @@ use Illuminate\Routing\Controllers\Middleware;
 class StudentController extends Controller implements HasMiddleware
 {
     protected StudentService $studentService;
+    protected DepartmentService $departmentService;
 
-    public function __construct(StudentService $studentService)
+    public function __construct(StudentService $studentService, DepartmentService $departmentService)
     {
         $this->studentService = $studentService;
+        $this->departmentService = $departmentService;
     }
 
     public static function middleware(): array
@@ -37,8 +40,10 @@ class StudentController extends Controller implements HasMiddleware
     {
         $breadcrumbs = Breadcrumbs::generate('studentList');
         $students = $this->studentService->getStudents();
+        $departments = $this->departmentService->getDepartments();
         $responseData = [
             'students' => $students,
+            'departments' => $departments,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => 'Students',
         ];
@@ -51,7 +56,9 @@ class StudentController extends Controller implements HasMiddleware
     public function create()
     {
         $breadcrumbs = Breadcrumbs::generate('createStudent');
+        $departments = $this->departmentService->getActiveDepartments();
         $responseData = [
+            'departments' => $departments,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => 'Create Student',
         ];
@@ -84,8 +91,10 @@ class StudentController extends Controller implements HasMiddleware
     public function edit(Student $student)
     {
         $breadcrumbs = Breadcrumbs::generate('editStudent', $student);
+        $departments = $this->departmentService->getActiveDepartments();
         $responseData = [
             'student' => $student,
+            'departments' => $departments,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => 'Edit Student',
         ];

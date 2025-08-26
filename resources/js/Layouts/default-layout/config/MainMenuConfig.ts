@@ -81,6 +81,14 @@ const sidebarMenuConfig: Array<MenuItem> = [
                 bootstrapIcon: "bi-buildings-fill",
             },
 
+            {
+                heading: 'Hall',
+                route: "/halls",
+                routePermissions: ["can-view-hall"],
+                // keenthemesIcon: "bank",
+                bootstrapIcon: "bi-building",
+            },
+
         ],
     },
 ];
