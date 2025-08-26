@@ -8,6 +8,7 @@ use App\Models\Brand;
 use App\Models\Company\Company;
 use App\Models\Department;
 use App\Models\FiscalYear;
+use App\Models\Hall;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
 use App\Models\Student;
@@ -183,5 +184,23 @@ Breadcrumbs::for('createDepartment', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('editDepartment', function (BreadcrumbTrail $trail, Department $department) {
     $trail->parent('departments');
     $trail->push('Edit', route('departments.edit', $department));
+});
+
+//Hall list
+Breadcrumbs::for('halls', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Halls', route('halls.index'));
+});
+
+//Create Hall
+Breadcrumbs::for('createHall', function (BreadcrumbTrail $trail) {
+    $trail->parent('halls');
+    $trail->push('Add', route('halls.create'));
+});
+
+//Edit Hall
+Breadcrumbs::for('editHall', function (BreadcrumbTrail $trail, Hall $hall) {
+    $trail->parent('halls');
+    $trail->push('Edit', route('halls.edit', $hall));
 });
 

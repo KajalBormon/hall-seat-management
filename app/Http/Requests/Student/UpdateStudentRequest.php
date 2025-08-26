@@ -27,6 +27,7 @@ class UpdateStudentRequest extends FormRequest
             'roll'          => 'required|integer|unique:students,roll,' . $studentId,
             'registration'  => 'required|string|max:20|unique:students,registration,' . $studentId,
             'name'          => 'required|string|max:255',
+            'department_id' => 'required|exists:departments,id',
             'father_name'   => 'nullable|string|max:255',
             'mother_name'   => 'nullable|string|max:255',
             'email'         => 'nullable|email|unique:students,email,' . $studentId,
@@ -41,6 +42,8 @@ class UpdateStudentRequest extends FormRequest
             'roll.required' => 'The roll field is required.',
             'registration.required' => 'The registration field is required.',
             'name.required' => 'The name field is required.',
+            'department_id.required' => 'The department field is required.',
+            'department_id.exists'   => 'The selected department is invalid.',
             'mobile_number.required' => 'The mobile number field is required.',
         ];
     }

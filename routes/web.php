@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HallController;
 use App\Http\Controllers\StudentController;
 use App\Models\Department;
 use Inertia\Inertia;
@@ -93,6 +94,10 @@ Route::middleware(Language::class)
         //Department related routes
         Route::resource('departments', DepartmentController::class);
         Route::patch('/departments/{department}/change-status', [DepartmentController::class, 'changeStatus'])->name('departments.changeStatus');
+
+        //Hall Route
+        Route::resource('halls', HallController::class);
+        Route::patch('/halls/{hall}/change-status', [HallController::class, 'changeStatus'])->name('halls.changeStatus');
     });
 });
 

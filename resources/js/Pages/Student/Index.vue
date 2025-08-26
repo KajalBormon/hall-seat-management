@@ -41,6 +41,10 @@
                         {{ student.name }}
                     </template>
 
+                    <template v-slot:department="{ row: student }">
+                        {{ student.department }}
+                    </template>
+
                     <template v-slot:mobile_number="{ row: student }">
                         {{ student.mobile_number }}
                     </template>
@@ -96,6 +100,7 @@ const { t } = i18n.global;
 
 const props = defineProps({
     students: Object as() => IStudent[] | undefined,
+    departments: Object,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
@@ -110,6 +115,7 @@ interface IStudent {
     roll: string;
     registration: string;
     name: string;
+    department_id: number;
     father_name: string;
     mother_name: string;
     email: string;
@@ -133,6 +139,12 @@ const tableHeader = ref([
     {
         columnName: 'Name',
         columnLabel: "name",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+    {
+        columnName: 'Department',
+        columnLabel: "department",
         sortEnabled: true,
         columnWidth: 100
     },
@@ -178,6 +190,7 @@ onMounted(() => {
             roll: student.roll,
             registration: student.registration,
             name: student.name,
+            department: props.departments.find((dept) => dept.id === student.department_id).name,
             email: student.email,
             father_name: student.father_name,
             mother_name: student.mother_name,

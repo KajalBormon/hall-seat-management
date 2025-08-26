@@ -24,6 +24,11 @@ class DepartmentService extends BaseModelService
         return $this->model()::all();
     }
 
+    public function getActiveDepartments($isActive = true)
+    {
+        return $this->model()::where('is_active', $isActive)->get();
+    }
+
     public function changeStatus(Department $department, $isActive)
     {
         $isActive = ( $isActive == true ) ? false : true;
