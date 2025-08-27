@@ -33,7 +33,7 @@ const showDeleteConfirmation = async () => {
     });
 
     const result = await swalWithBootstrapButtons.fire({
-        title: `${t('confirmation.remove.others')} ${props.obj?.name || getFullName(props?.employee)}?`,
+        title: `${t('confirmation.remove.others')} ${props.obj?.name}?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: `${t('buttonValue.confirm')}!`,

@@ -89,6 +89,14 @@ const sidebarMenuConfig: Array<MenuItem> = [
                 bootstrapIcon: "bi-building",
             },
 
+            {
+                heading: 'Seat Plan',
+                route: "/rooms",
+                routePermissions: ["can-view-room"],
+                // keenthemesIcon: "bank",
+                bootstrapIcon: "bi-building-fill-add",
+            },
+
         ],
     },
 ];
