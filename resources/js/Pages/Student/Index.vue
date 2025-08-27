@@ -115,7 +115,7 @@ interface IStudent {
     roll: string;
     registration: string;
     name: string;
-    department_id: number;
+    department: number;
     father_name: string;
     mother_name: string;
     email: string;
@@ -185,12 +185,12 @@ const initStudents = ref < IStudent[] > ([]);
 
 onMounted(() => {
     if (props.students) {
-        initStudents.value = props.students.map(student => ({
+        initStudents.value = props.students.map((student: any) => ({
             id: student.id,
             roll: student.roll,
             registration: student.registration,
             name: student.name,
-            department: props.departments.find((dept) => dept.id === student.department_id).name,
+            department: props.departments?.find((dept: any) => dept.id === student.department_id)?.name,
             email: student.email,
             father_name: student.father_name,
             mother_name: student.mother_name,

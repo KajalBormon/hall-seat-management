@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\HallController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
 use App\Models\Department;
 use Inertia\Inertia;
@@ -98,6 +99,9 @@ Route::middleware(Language::class)
         //Hall Route
         Route::resource('halls', HallController::class);
         Route::patch('/halls/{hall}/change-status', [HallController::class, 'changeStatus'])->name('halls.changeStatus');
+
+        //Room Route
+        Route::resource('rooms', RoomController::class);
     });
 });
 

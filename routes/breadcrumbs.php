@@ -11,6 +11,7 @@ use App\Models\FiscalYear;
 use App\Models\Hall;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
+use App\Models\Room;
 use App\Models\Student;
 use App\Models\Subscription\SubscriptionPlan;
 use App\Models\Subscription\SubscriptionPlanFeature;
@@ -202,5 +203,23 @@ Breadcrumbs::for('createHall', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('editHall', function (BreadcrumbTrail $trail, Hall $hall) {
     $trail->parent('halls');
     $trail->push('Edit', route('halls.edit', $hall));
+});
+
+//Seat Plan list
+Breadcrumbs::for('rooms', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Seat Plans', route('rooms.index'));
+});
+
+//Create Seat Plan
+Breadcrumbs::for('createRoom', function (BreadcrumbTrail $trail) {
+    $trail->parent('rooms');
+    $trail->push('Add', route('rooms.create'));
+});
+
+//Edit Seat Plan
+Breadcrumbs::for('editRoom', function (BreadcrumbTrail $trail, Room $room) {
+    $trail->parent('rooms');
+    $trail->push('Edit', route('rooms.edit', $room));
 });
 
