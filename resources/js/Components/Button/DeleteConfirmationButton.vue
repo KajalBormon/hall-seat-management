@@ -21,6 +21,7 @@ const props = defineProps({
     attendanceId: Number,
     employee: Object,
     iconClass: String,
+    messageTitle: String,
 });
 
 const showDeleteConfirmation = async () => {
@@ -33,7 +34,7 @@ const showDeleteConfirmation = async () => {
     });
 
     const result = await swalWithBootstrapButtons.fire({
-        title: `${t('confirmation.remove.others')} ${props.obj?.name}?`,
+        title: `${t('confirmation.remove.others', { messageTitle: props?.messageTitle })}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: `${t('buttonValue.confirm')}!`,

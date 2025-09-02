@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->string('mobile_number')->unique();
             $table->string('address')->nullable();
+            $table->foreignId('hall_id')->nullable()->constrained('halls')->cascadeOnDelete();
+            $table->string('hall_status')->nullable(); //attachment, alloted
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

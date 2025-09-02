@@ -74,6 +74,9 @@ class StudentController extends Controller implements HasMiddleware
         $student = $this->studentService->createStudent($validatedData);
         $status = $student ? 'success' : 'error';
         $message = $student ? 'Student created successfully.' : 'Failed to create student.';
+        if ($request->routeIs('hallAttachments.student.store')) {
+            return redirect()->route('hall-attachments.create', ['studentId' => $student->id])->with($status, $message);
+        }
         return redirect()->route('students.index')->with($status, $message);
     }
 

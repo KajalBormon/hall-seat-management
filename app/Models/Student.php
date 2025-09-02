@@ -18,6 +18,8 @@ class Student extends Model
         'email',
         'mobile_number',
         'address',
+        'hall_id',
+        'hall_status',
         'is_active',
     ];
 

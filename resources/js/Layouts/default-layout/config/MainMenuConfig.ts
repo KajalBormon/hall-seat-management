@@ -97,6 +97,14 @@ const sidebarMenuConfig: Array<MenuItem> = [
                 bootstrapIcon: "bi-building-fill-add",
             },
 
+            {
+                heading: 'Hall Attachment',
+                route: "/hall-attachments",
+                routePermissions: ["can-view-hall-attachment"],
+                // keenthemesIcon: "bank",
+                bootstrapIcon: "bi-building-up",
+            },
+
         ],
     },
 ];

@@ -9,6 +9,7 @@ use App\Models\Company\Company;
 use App\Models\Department;
 use App\Models\FiscalYear;
 use App\Models\Hall;
+use App\Models\HallAttachment;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
 use App\Models\Room;
@@ -221,5 +222,23 @@ Breadcrumbs::for('createRoom', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('editRoom', function (BreadcrumbTrail $trail, Room $room) {
     $trail->parent('rooms');
     $trail->push('Edit', route('rooms.edit', $room));
+});
+
+//Hall Attachment list
+Breadcrumbs::for('hallAttachments', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Hall Attachments', route('hall-attachments.index'));
+});
+
+//Create hall attachment
+Breadcrumbs::for('createHallAttachment', function (BreadcrumbTrail $trail) {
+    $trail->parent('hallAttachments');
+    $trail->push('Add', route('hall-attachments.create'));
+});
+
+//Edit hall attachment
+Breadcrumbs::for('editHallAttachment', function (BreadcrumbTrail $trail, HallAttachment $hallAttachment) {
+    $trail->parent('hallAttachments');
+    $trail->push('Edit', route('hall-attachments.edit', $hallAttachment));
 });
 
