@@ -275,7 +275,7 @@
         "changeStatus": "Are you sure you want to change status of",
         "remove": {
             "account": "Are you sure you want to delete your account?",
-            "others": "Are you sure you want to remove"
+            "others": "Are you sure you want to remove {messageTitle}"
         },
         "wait": "Please wait...",
         "permissionDenied": "Permission Denied",

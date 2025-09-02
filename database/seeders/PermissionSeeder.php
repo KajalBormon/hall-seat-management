@@ -283,6 +283,48 @@ class PermissionSeeder extends Seeder
                 'group_name' => 'Room Management',
                 'is_active' => true,
             ],
+
+            //Hall Attachment
+            [
+                'id' => 34,
+                'display_name' => 'হল এটাচমেন্ট দেখা',
+                'name' => 'can-view-hall-attachment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Attachment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 35,
+                'display_name' => 'হল এটাচমেন্ট তৈরী করা',
+                'name' => 'can-create-hall-attachment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Attachment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 36,
+                'display_name' => 'হল এটাচমেন্ট আপডেট করা',
+                'name' => 'can-edit-hall-attachment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Attachment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 37,
+                'display_name' => 'হল এটাচমেন্ট ডিলিট করা',
+                'name' => 'can-delete-hall-attachment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Attachment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 38,
+                'display_name' => 'হল এটাচমেন্ট ডিটেইলস দেখা',
+                'name' => 'can-view-details-hall-attachment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Attachment Management',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($permissions as $permission) {

@@ -59,6 +59,17 @@
                         {{ student.mother_name }}
                     </template>
 
+                    <!-- Attach/Allot -->
+                    <template v-slot:hall_status="{ row: student }">
+                        <span :class="{
+                                'badge': true,
+                                'badge-warning': student.hall_status === 'attachment',
+                                'badge-success': student.hall_status === 'alloted'
+                            }" style="text-transform: capitalize">
+                        {{ student.hall_status || 'N/A' }}
+                        </span>
+                    </template>
+
                     <template v-slot:email="{ row: student }">
                         {{ student.email }}
                     </template>
@@ -118,6 +129,7 @@ interface IStudent {
     department: number;
     father_name: string;
     mother_name: string;
+    hall_status: string;
     email: string;
     address: string;
     mobile_number: string;
@@ -161,6 +173,12 @@ const tableHeader = ref([
         columnWidth: 100
     },
     {
+        columnName: 'Attach/Allot',
+        columnLabel: "hall_status",
+        sortEnabled: true,
+        columnWidth: 100
+    },
+    {
         columnName: 'Email',
         columnLabel: "email",
         sortEnabled: true,
@@ -194,6 +212,7 @@ onMounted(() => {
             email: student.email,
             father_name: student.father_name,
             mother_name: student.mother_name,
+            hall_status: student.hall_status,
             address: student.address,
             mobile_number: student.mobile_number,
         }));
