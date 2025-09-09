@@ -325,6 +325,47 @@ class PermissionSeeder extends Seeder
                 'group_name' => 'Hall Attachment Management',
                 'is_active' => true,
             ],
+            //Hall Allotment
+            [
+                'id' => 39,
+                'display_name' => 'হল বরাদ্দ দেখা',
+                'name' => 'can-view-hall-allotment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Allotment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 40,
+                'display_name' => 'হল বরাদ্দ তৈরী দেখা',
+                'name' => 'can-create-hall-allotment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Allotment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 41,
+                'display_name' => 'হল বরাদ্দ আপডেট দেখা',
+                'name' => 'can-edit-hall-allotment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Allotment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 42,
+                'display_name' => 'হল বরাদ্দ ডিলিট দেখা',
+                'name' => 'can-delete-hall-allotment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Allotment Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 43,
+                'display_name' => 'হল বরাদ্দ ডিটেইলস দেখা',
+                'name' => 'can-view-details-hall-allotment',
+                'guard_name' => 'web',
+                'group_name' => 'Hall Allotment Management',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($permissions as $permission) {

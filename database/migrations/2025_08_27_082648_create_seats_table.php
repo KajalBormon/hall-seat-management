@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
             $table->string('seat_label'); // A, B, C, D
-             $table->string('seat_code')->unique();
+            $table->string('seat_code')->unique();
             $table->string('status')->default('empty'); //empty and allotted
             $table->timestamps();
         });

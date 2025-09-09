@@ -105,6 +105,14 @@ const sidebarMenuConfig: Array<MenuItem> = [
                 bootstrapIcon: "bi-building-up",
             },
 
+            {
+                heading: 'Hall Allotment',
+                route: "/hall-allotments",
+                routePermissions: ["can-view-hall-allotment"],
+                // keenthemesIcon: "bank",
+                bootstrapIcon: "bi-building-fill-check",
+            },
+
         ],
     },
 ];

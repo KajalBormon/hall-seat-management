@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HallAllotmentController;
 use App\Http\Controllers\HallAttachmentController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\RoomController;
@@ -108,6 +109,9 @@ Route::middleware(Language::class)
         Route::resource('hall-attachments', HallAttachmentController::class);
         Route::post('hall-attachments/student', [StudentController::class,'store'])->name('hallAttachments.student.store');
         Route::patch('/hall-attachment/{hallAttachment}/change-status', [HallAttachmentController::class, 'changeStatus'])->name('hall-attachments.changeStatus');
+
+        //Hall Allotment Route
+        Route::resource('hall-allotments', HallAllotmentController::class);
     });
 });
 

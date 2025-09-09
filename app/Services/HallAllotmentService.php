@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\HallAllotment;
+use App\Models\Seat;
+use App\Models\Student;
+use Illuminate\Support\Facades\DB;
+
+class HallAllotmentService extends BaseModelService
+{
+    /**
+     * Create a new class instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    public function model(): string
+    {
+        return HallAllotment::class;
+    }
+
+    public function getHallAllotments()
+    {
+        return $this->model()::with(['student', 'hall', 'seat'])->get();
+    }
+
+    public function createHallAllotment(array $data)
+    {
+        return DB::transaction(function () use ($data) {
+            $hallAllotment = $this->create($data);
+
+            $student = Student::find($data['student_id']);
+            $student->update([
+                'hall_id' => $hallAllotment->hall_id,
+                'hall_status' => 'alloted'
+            ]);
+
+            $seat = Seat::find($data['seat_id']);
+            $seat->update([
+                'status' => 'alloted'
+            ]);
+
+            return $hallAllotment;
+        });
+    }
+
+    public function updateHallAllotment($hallAllotment, array $data)
+    {
+        return DB::transaction(function () use ($hallAllotment, $data) {
+            // Store old seat_id before updating
+            $oldSeatId = $hallAllotment->seat_id;
+
+            // Update hall allotment
+            $hallAllotment->update($data);
+
+            // Update student's hall
+            $student = Student::find($data['student_id']);
+            $student->update([
+                'hall_id' => $hallAllotment->hall_id
+            ]);
+
+            // Free the old seat if seat changed
+            if ($oldSeatId && $oldSeatId != $hallAllotment->seat_id) {
+                Seat::find($oldSeatId)?->update([
+                    'status' => 'empty'
+                ]);
+            }
+
+            // Mark new seat as allotted
+            $newSeat = Seat::find($hallAllotment->seat_id);
+            $newSeat->update([
+                'status' => 'alloted'
+            ]);
+
+            return $hallAllotment;
+        });
+    }
+
+    public function deleteHallAllotment($hallAllotment)
+    {
+        return DB::transaction(function () use ($hallAllotment) {
+            // Reset student's hall_id
+            $student = Student::find($hallAllotment->student_id);
+            if ($student) {
+                $student->update([
+                    'hall_id' => null,
+                    'hall_status' => null
+                ]);
+            }
+
+            // Free the seat
+            $seat = Seat::find($hallAllotment->seat_id);
+            if ($seat) {
+                $seat->update([
+                    'status' => 'empty'
+                ]);
+            }
+
+            // Delete hall allotment
+            $hallAllotment->delete();
+
+            return true;
+        });
+    }
+
+
+}

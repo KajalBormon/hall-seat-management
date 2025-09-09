@@ -9,6 +9,7 @@ use App\Models\Company\Company;
 use App\Models\Department;
 use App\Models\FiscalYear;
 use App\Models\Hall;
+use App\Models\HallAllotment;
 use App\Models\HallAttachment;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
@@ -240,5 +241,23 @@ Breadcrumbs::for('createHallAttachment', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('editHallAttachment', function (BreadcrumbTrail $trail, HallAttachment $hallAttachment) {
     $trail->parent('hallAttachments');
     $trail->push('Edit', route('hall-attachments.edit', $hallAttachment));
+});
+
+//Hall Allotment list
+Breadcrumbs::for('hallAllotments', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Hall Allotments', route('hall-allotments.index'));
+});
+
+//Create hall Allotment
+Breadcrumbs::for('createHallAllotment', function (BreadcrumbTrail $trail) {
+    $trail->parent('hallAllotments');
+    $trail->push('Add', route('hall-allotments.create'));
+});
+
+//Edit hall Allotment
+Breadcrumbs::for('editHallAllotment', function (BreadcrumbTrail $trail, HallAllotment $hallAllotment) {
+    $trail->parent('hallAllotments');
+    $trail->push('Edit', route('hall-allotments.edit', $hallAllotment));
 });
 

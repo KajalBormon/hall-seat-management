@@ -5,7 +5,7 @@
             <!--begin::Card header-->
             <div class="card-header border-0 cursor-pointer">
                 <div class="card-title m-0">
-                    <h3 class="fw-bold m-0">{{ props.hallAttachment?.id ? 'Edit Hall Attachment' : 'Add Hall Attachment' }}</h3>
+                    <h3 class="fw-bold m-0">{{ props.hallAllotment?.id ? 'Edit Hall Allotment' : 'Add Hall Allotment' }}</h3>
                 </div>
                 <div class="d-flex justify-content-end p-4" data-kt-customer-table-toolbar="base">
                     <button v-if="checkPermission('can-create-student')" type="button" class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_add_student" style="width:150px">
@@ -32,7 +32,7 @@
                                         :options="allStudents"
                                         label="roll"
                                         trackBy="roll"
-                                        :disabled="!!props.hallAttachment?.id"
+                                        :disabled="!!props.hallAllotment?.id"
                                     />
                                     <ErrorMessage :errorMessage="formData.errors.student_id" />
                                 </div>
@@ -48,7 +48,7 @@
 
                         <!-- Hall Name -->
                         <div class="row mb-2 g-4">
-                            <div class="col-md-12 fv-row">
+                            <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">Hall Name</label>
                                     <Multiselect
@@ -62,13 +62,38 @@
                                     <ErrorMessage :errorMessage="formData.errors.hall_id" />
                                 </div>
                             </div>
+
+                            <div class="col-md-6 fv-row">
+                                <div class="d-flex flex-column mb-5 fv-row">
+                                    <label class="required fs-5 fw-semibold mb-2"> Seat Number </label>
+                                    <Multiselect
+                                        placeholder="Select Seat Number"
+                                        v-model="formData.seat_id"
+                                        :searchable="true"
+                                        :options="allSeats"
+                                        label="code"
+                                        trackBy="code"
+                                    />
+                                    <ErrorMessage :errorMessage="formData.errors.seat_id" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 g-4">
+                            <div class="col-md-12 fv-row">
+                                <div class="d-flex flex-column mb-5 fv-row">
+                                    <label class="required fs-5 fw-semibold mb-2">Allotment Date</label>
+                                    <Field type="date" class="form-control form-control-lg form-control-solid" placeholder="Allotment Date" name="allotment_date" v-model="formData.allotment_date"/>
+                                    <ErrorMessage :errorMessage="formData.errors.allotment_date" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!--end::Card body-->
 
                     <!-- Submit Button-->
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
-                        <SubmitButton :id="props.hallAttachment?.id" />
+                        <SubmitButton :id="props.hallAllotment?.id" />
                     </div>
                 </VForm>
             </div>
@@ -87,14 +112,15 @@ import Multiselect from '@vueform/multiselect';
 import KTIcon from "@/Core/helpers/kt-icon/KTIcon.vue";
 import { checkPermission } from "@/Core/helpers/Permission";
 import { ref, watch } from 'vue';
-import AddStudentModal from "@/Pages/HallAttachment/Modal/AddStudentModal.vue";
+import AddStudentModal from "@/Pages/hallAllotment/Modal/AddStudentModal.vue";
 
 const props = defineProps({
-    hallAttachment: Object,
+    hallAllotment: Object,
     students: Array as () => IStudent[] | undefined,
     halls: Array,
     departments: Object,
     studentId: Number,
+    seats: Object,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
@@ -111,11 +137,15 @@ interface IStudent {
     [key: string]: any;
 }
 
+const today = ref(new Date().toISOString().substr(0, 10));
+
 const formData = useForm({
-    id: props.hallAttachment?.id || '',
-    student_id: props.hallAttachment?.student_id || props.studentId || '',
-    hall_id: props.hallAttachment?.hall_id || '',
-    student_name: props.students?.find((student: any) => student.id === props.hallAttachment?.student_id)?.name || '',
+    id: props.hallAllotment?.id || '',
+    student_id: props.hallAllotment?.student_id || props.studentId || '',
+    hall_id: props.hallAllotment?.hall_id || '',
+    seat_id: props.hallAllotment?.seat_id || '',
+    allotment_date: props.hallAllotment?.allotment_date || today,
+    student_name: props.students?.find((student: any) => student.id === props.hallAllotment?.student_id)?.name || '',
 });
 
 const allStudents = ref<Array<any>>([]);
@@ -133,20 +163,38 @@ if (Array.isArray(props.departments) && props.departments.length > 0) {
     allDepartments.value = props.departments.map((dept: any) => ({value: dept.id, name: dept.name}));
 }
 
+const allSeats = ref<Array<any>>([]);
+if (Array.isArray(props.seats) && props.seats.length > 0) {
+    allSeats.value = props.seats.map((seat: any) => ({value: seat.id, code: seat.seat_code}));
+}
+
 watch(() => formData.student_id, (newId) => {
     const selected = allStudents.value.find((s: any) => s.value === newId);
     formData.student_name = selected ? selected.name : '';
 });
 
 const submit = () => {
-    if (props.hallAttachment?.id) {
-        formData.put(route('hall-attachments.update', props.hallAttachment?.id), {
+    if (props.hallAllotment?.id) {
+        formData.put(route('hall-allotments.update', props.hallAllotment?.id), {
             preserveScroll: true,
+            onSuccess: () => {
+                console.log("✅ Hall allotment updated successfully");
+            },
+            onError: (errors) => {
+                console.error("❌ Validation errors on update:", errors);
+            },
         });
     } else {
-        formData.post(route('hall-attachments.store'), {
+        formData.post(route('hall-allotments.store'), {
             preserveScroll: true,
+            onSuccess: () => {
+                console.log("✅ Hall allotment created successfully");
+            },
+            onError: (errors) => {
+                console.error("❌ Validation errors on create:", errors);
+            },
         });
     }
 };
+
 </script>
