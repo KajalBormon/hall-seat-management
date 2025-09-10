@@ -31,7 +31,7 @@
                                         :searchable="true"
                                         :options="allStudents"
                                         label="roll"
-                                        trackBy="value"
+                                        trackBy="roll"
                                         :disabled="!!props.hallAttachment?.id"
                                     />
                                     <ErrorMessage :errorMessage="formData.errors.student_id" />
@@ -57,7 +57,7 @@
                                         :searchable="true"
                                         :options="allHalls"
                                         label="name"
-                                        trackBy="value"
+                                        trackBy="name"
                                     />
                                     <ErrorMessage :errorMessage="formData.errors.hall_id" />
                                 </div>

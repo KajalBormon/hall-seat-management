@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\HallService;
 use Inertia\Inertia;
 use App\Constants\Constants;
 use Illuminate\Http\Request;
@@ -24,13 +25,15 @@ class UserController extends Controller implements HasMiddleware
     protected RoleService $roleService;
     protected ActivityLogService $activityLogService;
     protected AuthenticationLogService $authenticationLogService;
+    protected HallService $hallService;
 
-    public function __construct(UserService $userService, RoleService $roleService, ActivityLogService $activityLogService, AuthenticationLogService $authenticationLogService)
+    public function __construct(UserService $userService, RoleService $roleService, ActivityLogService $activityLogService, AuthenticationLogService $authenticationLogService, HallService $hallService)
     {
         $this->userService = $userService;
         $this->roleService = $roleService;
         $this->activityLogService = $activityLogService;
         $this->authenticationLogService = $authenticationLogService;
+        $this->hallService = $hallService;
     }
 
     public static function middleware(): array
@@ -62,8 +65,10 @@ class UserController extends Controller implements HasMiddleware
     {
         $breadcrumbs = Breadcrumbs::generate('addUser');
         $roles = $this->roleService->getActiveRoles();
+        $halls = $this->hallService->getHalls();
         $responseData = [
             'roles' => $roles,
+            'halls' => $halls,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => __('pageTitle.custom.user.create'),
         ];
@@ -102,10 +107,12 @@ class UserController extends Controller implements HasMiddleware
         $breadcrumbs = Breadcrumbs::generate('editUser', $user);
         $roles = $this->roleService->getActiveRoles();
         $currentRoles = $user->roles;
+        $currentHalls = $user->halls;
         $responseData = [
             'user' => $user,
             'roles' => $roles,
             'currentRoles' => $currentRoles,
+            'currentHalls' => $currentHalls,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => __('pageTitle.custom.user.edit'),
         ];

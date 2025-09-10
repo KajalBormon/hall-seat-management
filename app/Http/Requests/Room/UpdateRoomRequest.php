@@ -21,9 +21,9 @@ class UpdateRoomRequest extends FormRequest
      */
    public function rules(): array
     {
-        $roomNumber = $this->route('room')->id;
         return [
-            'room_number' => 'required|unique:rooms,room_number,'. $roomNumber,
+            'room_type_id' => 'nullable|exists:room_types,id',
+            'room_number' => 'required',
             'capacity' => 'nullable|integer|min:1',
         ];
     }
@@ -31,8 +31,8 @@ class UpdateRoomRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'room_type_id.exists'  => 'The selected room type is invalid.',
             'room_number.required' => 'The room number is required.',
-            'room_number.unique'   => 'This room number is already taken.',
             'capacity.integer'     => 'The capacity must be a number.',
             'capacity.min'         => 'The capacity must be at least 1.',
         ];

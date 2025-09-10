@@ -32,7 +32,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'role.isDeletable' => CheckIsRoleDeletable::class,
             'permission' => PermissionMiddleware::class,
             'api.key' => ApiKeyMiddleware::class,
-            'check-fiscal-year.isEditable' => CheckIsFiscalYearEditable::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

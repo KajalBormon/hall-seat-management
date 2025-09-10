@@ -7,7 +7,7 @@
                     <!--begin::Search-->
                     <div class="d-flex align-items-center position-relative my-1">
                         <KTIcon icon-name="magnifier" icon-class="fs-1 position-absolute ms-6" />
-                        <input type="text" v-model="search" @input="searchData()" class="form-control form-control-solid w-250px ps-15" placeholder="Search Room" />
+                        <input type="text" v-model="search" @input="searchData()" class="form-control form-control-solid w-250px ps-15" placeholder="Search Hall Allotment" />
                     </div>
                     <!--end::Search-->
                 </div>
@@ -16,9 +16,9 @@
                     <!--begin::Toolbar-->
                     <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                         <!--begin::Add Permission-->
-                        <Link v-if="checkPermission('can-create-room')" :href="route('rooms.create')" class="btn btn-primary">
+                        <Link v-if="checkPermission('can-create-hall')" :href="route('hall-allotments.create')" class="btn btn-primary">
                             <KTIcon icon-name="plus" icon-class="fs-2" />
-                            Add Room
+                            Add Hall Allotment
                         </Link>
                         <!--end::Add Permission-->
                     </div>
@@ -28,40 +28,33 @@
 
             <div class="card-body pt-0">
                 <Datatable @on-sort="sortData" :data="tableData" :header="tableHeader" :enable-items-per-page-dropdown="true" :checkbox-enabled="false">
-                    <!-- Room Number -->
-                    <template v-slot:room_number="{ row: room }">
-                        {{ room.room_number }}
+                    <!-- Student ROLL -->
+                     <template v-slot:student_roll="{ row: hallAllotment }">
+                        {{ hallAllotment.student_roll }}
                     </template>
 
-                    <template v-slot:seat_label="{ row: room }">
-                        {{ room.seat_label }}
+                    <!-- Student Name -->
+                    <template v-slot:student_name="{ row: hallAllotment }">
+                        {{ hallAllotment.student_name }}
                     </template>
 
-                    <template v-slot:seat_code="{ row: room }">
-                        {{ room.seat_code }}
+                    <!-- Hall Name -->
+                    <template v-slot:hall_name="{ row: hallAllotment }">
+                        {{ hallAllotment.hall_name }}
                     </template>
 
-                    <template v-slot:hall_name="{ row: room }">
-                        {{ room.hall_name }}
+                    <!-- Seat Code -->
+                    <template v-slot:seat_code="{ row: hallAllotment }">
+                        {{ hallAllotment.seat_code }}
                     </template>
 
-                    <template v-slot:room_type="{ row: room }">
-                        {{ room.room_type }}
-                    </template>
-
-                    <template v-slot:status="{ row: room }">
-                        <span :class="['badge',room.status === 'empty' ? 'badge-success' : 'badge-danger']">
-                            {{ room.status }}
-                        </span>
-                    </template>
-
-                    <template v-slot:actions="{ row: room }">
+                    <template v-slot:actions="{ row: hallAllotment }">
                         <div class="d-flex align-items-center justify-content-end">
-                            <Link v-if="checkPermission('can-edit-room')" :href="route('rooms.edit', room.id)" class="btn btn-icon btn-flex btn-active-light-primary w-30px h-30px" data-bs-toggle="tooltip" :title="$t('tooltip.title.edit')">
+                            <Link v-if="checkPermission('can-edit-hall-allotment')" :href="route('hall-allotments.edit', hallAllotment.id)" class="btn btn-icon btn-flex btn-active-light-primary w-30px h-30px" data-bs-toggle="tooltip" :title="$t('tooltip.title.edit')">
                                 <KTIcon icon-name="pencil" icon-class="fs-3 text-primary" />
                             </Link>
                             <!-- Delete -->
-                            <DeleteConfirmationButton v-if="checkPermission('can-delete-room')" iconClass="fs-2" :obj="room" confirmRoute="rooms.destroy" title="Delete room" :messageTitle="`${room.name} ?`"/>
+                            <DeleteConfirmationButton v-if="checkPermission('can-delete-hall-allotment')" iconClass="fs-2" :obj="hallAllotment" confirmRoute="hall-allotments.destroy" title="Delete hall" :messageTitle="`${hallAllotment.student_name} hall allotment?`"/>
                         </div>
                     </template>
                 </Datatable>
@@ -87,60 +80,61 @@ import DeleteConfirmationButton from '@/Components/Button/DeleteConfirmationButt
 const { t } = i18n.global;
 
 const props = defineProps({
-    rooms: Object as() => IRoom[] | undefined,
+    hallAllotments: Object as() => IHallAllotment[] | undefined,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
-console.log(props.rooms);
+
 interface Breadcrumb {
     url: string;
     title: string;
 }
 
-interface IRoom {
+interface IHallAllotment {
     id: number;
-    room_number: string;
-    seat_label: string;
-    seat_code: string;
-    status: string;
+    student_roll: number;
+    student_name: string;
+    hall_name: string;
+    student?: IStudent;
+    hall?: IHall;      
+    seat_code?: string;
+}
+
+interface IStudent {
+    id: number;
+    name: string;
+    roll: string;
+}
+
+interface IHall {
+    id: number;
+    name: string;
 }
 
 const tableHeader = ref([
     {
-        columnName: 'Room Number',
-        columnLabel: "room_number",
+        columnName: 'Student Roll',
+        columnLabel: "student_roll",
         sortEnabled: true,
-        columnWidth: 100
+        columnWidth: 150
     },
     {
-        columnName: 'Seat Label',
-        columnLabel: "seat_label",
+        columnName: 'Student Name',
+        columnLabel: "student_name",
         sortEnabled: true,
-        columnWidth: 100
-    },
-    {
-        columnName: 'Seat Code',
-        columnLabel: "seat_code",
-        sortEnabled: true,
-        columnWidth: 100
+        columnWidth: 200
     },
     {
         columnName: 'Hall Name',
         columnLabel: "hall_name",
         sortEnabled: true,
-        columnWidth: 100
+        columnWidth: 200
     },
     {
-        columnName: 'Room Type',
-        columnLabel: "room_type",
+        columnName: 'Seat Number',
+        columnLabel: "seat_code",
         sortEnabled: true,
-        columnWidth: 100
-    },
-    {
-        columnName: 'Status',
-        columnLabel: "status",
-        sortEnabled: true,
-        columnWidth: 100
+        columnWidth: 200
     },
     {
         columnName: 'Action',
@@ -150,30 +144,25 @@ const tableHeader = ref([
     },
 ]);
 
-const tableData = ref < IRoom[] > ([]);
-const initRooms = ref < IRoom[] > ([]);
+const tableData = ref < IHallAllotment[] > ([]);
+const initHallAllotments = ref < IHallAllotment[] > ([]);
 
 onMounted(() => {
-    if (props.rooms) {
-        initRooms.value = props.rooms.flatMap((room: any) =>
-            room.seats.map((seat: any) => ({
-                id: room.id,
-                room_number: room.room_number,
-                seat_id: seat.id,
-                seat_label: seat.seat_label,
-                seat_code: seat.seat_code,
-                hall_name: room.hall?.name,
-                room_type: room.room_type?.name,
-                status: seat.status,
-            }))
-        );
-        tableData.value = initRooms.value;
+    if (props.hallAllotments) {
+        initHallAllotments.value = props.hallAllotments.map((allotment: any) => ({
+            id: allotment.id,
+            student_roll: allotment.student?.roll || '',
+            student_name: allotment.student?.name || '',
+            hall_name: allotment.hall?.name || '',
+            seat_code: allotment.seat?.seat_code || '',
+        }));
+        tableData.value = initHallAllotments.value;
     }
 });
 
 const search = ref < string > ("");
 const searchData = () => {
-    tableData.value = [...initRooms.value];
+    tableData.value = [...initHallAllotments.value];
     if (search.value !== "") {
         tableData.value = tableData.value.filter(item => searchingFunc(item, search.value));
     }

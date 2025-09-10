@@ -23,27 +23,44 @@ class RoomService extends BaseModelService
 
     public function getRooms()
     {
-        return $this->model()::with('seats')->get();
+        return $this->model()::with(['seats', 'hall', 'roomType'])->get();
+    }
+
+    public function getRoomByProvost()
+    {
+        $user = auth()->user();
+        $hallIds = $user->halls;
+
+        return $this->model()::with(['seats', 'hall', 'roomType'])->whereIn('hall_id', $hallIds)->get();
     }
 
     public function createRoom(array $data): Room
     {
-        $room = $this->create($data);
+        return DB::transaction(function () use ($data) {
+            $user = auth()->user();
+            $hallIds = $user->halls;
 
-        // Auto generate seats
-        $capacity = $data['capacity'] ?? 4;
-        $seatLabels = range('A', chr(64 + $capacity)); // A, B, C...
+            if(!empty($hallIds)){
+                $data['hall_id'] = $hallIds[0];
+            }
 
-        foreach ($seatLabels as $label) {
-            Seat::create([
-                'room_id' => $room->id,
-                'seat_label' => $label,
-                'seat_code' => $room->room_number .'-'.$label,
-                'status' => 'empty',
-            ]);
-        }
+            $room = $this->create($data);
 
-        return $room;
+            // Auto generate seats
+            $capacity = $data['capacity'] ?? 4;
+            $seatLabels = range('A', chr(64 + $capacity)); // A, B, C...
+
+            foreach ($seatLabels as $label) {
+                Seat::create([
+                    'room_id' => $room->id,
+                    'seat_label' => $label,
+                    'seat_code' => $room->room_number .'-'.$label,
+                    'status' => 'empty',
+                ]);
+            }
+
+            return $room;
+        });
     }
 
     public function updateRoom($room, array $data)

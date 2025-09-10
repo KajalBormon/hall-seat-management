@@ -7,7 +7,7 @@
                     <!--begin::Search-->
                     <div class="d-flex align-items-center position-relative my-1">
                         <KTIcon icon-name="magnifier" icon-class="fs-1 position-absolute ms-6" />
-                        <input type="text" v-model="search" @input="searchData()" class="form-control form-control-solid w-250px ps-15" placeholder="Search Room" />
+                        <input type="text" v-model="search" @input="searchData()" class="form-control form-control-solid w-250px ps-15" placeholder="Search Room Type" />
                     </div>
                     <!--end::Search-->
                 </div>
@@ -16,9 +16,9 @@
                     <!--begin::Toolbar-->
                     <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                         <!--begin::Add Permission-->
-                        <Link v-if="checkPermission('can-create-room')" :href="route('rooms.create')" class="btn btn-primary">
+                        <Link v-if="checkPermission('can-create-room-type')" :href="route('room-types.create')" class="btn btn-primary">
                             <KTIcon icon-name="plus" icon-class="fs-2" />
-                            Add Room
+                            Add Room Type
                         </Link>
                         <!--end::Add Permission-->
                     </div>
@@ -28,40 +28,29 @@
 
             <div class="card-body pt-0">
                 <Datatable @on-sort="sortData" :data="tableData" :header="tableHeader" :enable-items-per-page-dropdown="true" :checkbox-enabled="false">
-                    <!-- Room Number -->
-                    <template v-slot:room_number="{ row: room }">
-                        {{ room.room_number }}
+                    <!-- hall Name -->
+                    <template v-slot:name="{ row: roomType }">
+                        {{ roomType.name }}
                     </template>
 
-                    <template v-slot:seat_label="{ row: room }">
-                        {{ room.seat_label }}
+                    <template v-slot:hall_name="{ row: roomType }">
+                        {{ roomType.hall_name }}
                     </template>
 
-                    <template v-slot:seat_code="{ row: room }">
-                        {{ room.seat_code }}
+                    <!-- RoomType Status -->
+                    <template v-slot:is_active="{ row: roomType }" v-if="checkPermission('can-edit-room-type')">
+                        <div class="form-check form-check-solid form-switch">
+                            <ChangeStatusButton :obj="roomType" confirmRoute="room-types.changeStatus" cancelRoute="room-types.index" />
+                        </div>
                     </template>
 
-                    <template v-slot:hall_name="{ row: room }">
-                        {{ room.hall_name }}
-                    </template>
-
-                    <template v-slot:room_type="{ row: room }">
-                        {{ room.room_type }}
-                    </template>
-
-                    <template v-slot:status="{ row: room }">
-                        <span :class="['badge',room.status === 'empty' ? 'badge-success' : 'badge-danger']">
-                            {{ room.status }}
-                        </span>
-                    </template>
-
-                    <template v-slot:actions="{ row: room }">
+                    <template v-slot:actions="{ row: roomType }">
                         <div class="d-flex align-items-center justify-content-end">
-                            <Link v-if="checkPermission('can-edit-room')" :href="route('rooms.edit', room.id)" class="btn btn-icon btn-flex btn-active-light-primary w-30px h-30px" data-bs-toggle="tooltip" :title="$t('tooltip.title.edit')">
+                            <Link v-if="checkPermission('can-edit-room-type')" :href="route('room-types.edit', roomType.id)" class="btn btn-icon btn-flex btn-active-light-primary w-30px h-30px" data-bs-toggle="tooltip" :title="$t('tooltip.title.edit')">
                                 <KTIcon icon-name="pencil" icon-class="fs-3 text-primary" />
                             </Link>
                             <!-- Delete -->
-                            <DeleteConfirmationButton v-if="checkPermission('can-delete-room')" iconClass="fs-2" :obj="room" confirmRoute="rooms.destroy" title="Delete room" :messageTitle="`${room.name} ?`"/>
+                            <DeleteConfirmationButton v-if="checkPermission('can-delete-room-type')" iconClass="fs-2" :obj="roomType" confirmRoute="room-types.destroy" title="Delete roomType" :messageTitle="`${roomType.name} ?`"/>
                         </div>
                     </template>
                 </Datatable>
@@ -87,58 +76,45 @@ import DeleteConfirmationButton from '@/Components/Button/DeleteConfirmationButt
 const { t } = i18n.global;
 
 const props = defineProps({
-    rooms: Object as() => IRoom[] | undefined,
+    roomTypes: Object as() => IRoomType[] | undefined,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
-console.log(props.rooms);
+
 interface Breadcrumb {
     url: string;
     title: string;
 }
 
-interface IRoom {
+interface IRoomType {
     id: number;
-    room_number: string;
-    seat_label: string;
-    seat_code: string;
-    status: string;
+    name: string;
+    is_active: boolean;
+    hall_name: string;
+    hall?: IHall;
+}
+
+interface IHall {
+    id: number;
+    name: string;
 }
 
 const tableHeader = ref([
     {
-        columnName: 'Room Number',
-        columnLabel: "room_number",
+        columnName: 'Room Type',
+        columnLabel: "name",
         sortEnabled: true,
-        columnWidth: 100
-    },
-    {
-        columnName: 'Seat Label',
-        columnLabel: "seat_label",
-        sortEnabled: true,
-        columnWidth: 100
-    },
-    {
-        columnName: 'Seat Code',
-        columnLabel: "seat_code",
-        sortEnabled: true,
-        columnWidth: 100
+        columnWidth: 200
     },
     {
         columnName: 'Hall Name',
         columnLabel: "hall_name",
         sortEnabled: true,
-        columnWidth: 100
-    },
-    {
-        columnName: 'Room Type',
-        columnLabel: "room_type",
-        sortEnabled: true,
-        columnWidth: 100
+        columnWidth: 200
     },
     {
         columnName: 'Status',
-        columnLabel: "status",
+        columnLabel: "is_active",
         sortEnabled: true,
         columnWidth: 100
     },
@@ -150,30 +126,24 @@ const tableHeader = ref([
     },
 ]);
 
-const tableData = ref < IRoom[] > ([]);
-const initRooms = ref < IRoom[] > ([]);
+const tableData = ref < IRoomType[] > ([]);
+const initRoomTypes = ref < IRoomType[] > ([]);
 
 onMounted(() => {
-    if (props.rooms) {
-        initRooms.value = props.rooms.flatMap((room: any) =>
-            room.seats.map((seat: any) => ({
-                id: room.id,
-                room_number: room.room_number,
-                seat_id: seat.id,
-                seat_label: seat.seat_label,
-                seat_code: seat.seat_code,
-                hall_name: room.hall?.name,
-                room_type: room.room_type?.name,
-                status: seat.status,
-            }))
-        );
-        tableData.value = initRooms.value;
+    if (props.roomTypes) {
+        initRoomTypes.value = props.roomTypes.map(room => ({
+            id: room.id,
+            name: room.name,
+            hall_name: room.hall?.name || '',
+            is_active: room.is_active
+        }));
+        tableData.value = initRoomTypes.value;
     }
 });
 
 const search = ref < string > ("");
 const searchData = () => {
-    tableData.value = [...initRooms.value];
+    tableData.value = [...initRoomTypes.value];
     if (search.value !== "") {
         tableData.value = tableData.value.filter(item => searchingFunc(item, search.value));
     }

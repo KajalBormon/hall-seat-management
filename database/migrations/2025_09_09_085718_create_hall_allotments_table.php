@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('hall_allotments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hall_id')->constrained('halls')->onDelete('cascade');
-            $table->foreignId('room_type_id')->nullable()->constrained('room_types')->onDelete('cascade');
-            $table->string('room_number');
-            $table->unsignedInteger('capacity')->default(4);
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('seat_id')->constrained('seats')->onDelete('cascade');
+            $table->date('allotment_date');
+            $table->string('status')->default('pending'); //pending, approved, cancel
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('hall_allotments');
     }
 };

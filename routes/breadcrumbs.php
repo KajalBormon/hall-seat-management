@@ -9,10 +9,12 @@ use App\Models\Company\Company;
 use App\Models\Department;
 use App\Models\FiscalYear;
 use App\Models\Hall;
+use App\Models\HallAllotment;
 use App\Models\HallAttachment;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
 use App\Models\Room;
+use App\Models\RoomType;
 use App\Models\Student;
 use App\Models\Subscription\SubscriptionPlan;
 use App\Models\Subscription\SubscriptionPlanFeature;
@@ -242,3 +244,38 @@ Breadcrumbs::for('editHallAttachment', function (BreadcrumbTrail $trail, HallAtt
     $trail->push('Edit', route('hall-attachments.edit', $hallAttachment));
 });
 
+//Hall Allotment list
+Breadcrumbs::for('hallAllotments', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Hall Allotments', route('hall-allotments.index'));
+});
+
+//Create hall Allotment
+Breadcrumbs::for('createHallAllotment', function (BreadcrumbTrail $trail) {
+    $trail->parent('hallAllotments');
+    $trail->push('Add', route('hall-allotments.create'));
+});
+
+//Edit hall Allotment
+Breadcrumbs::for('editHallAllotment', function (BreadcrumbTrail $trail, HallAllotment $hallAllotment) {
+    $trail->parent('hallAllotments');
+    $trail->push('Edit', route('hall-allotments.edit', $hallAllotment));
+});
+
+//Room Type list
+Breadcrumbs::for('roomTypes', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Room Types', route('room-types.index'));
+});
+
+//Create Room type
+Breadcrumbs::for('createRoomType', function (BreadcrumbTrail $trail) {
+    $trail->parent('roomTypes');
+    $trail->push('Add', route('room-types.create'));
+});
+
+//Edit Room Type
+Breadcrumbs::for('editRoomType', function (BreadcrumbTrail $trail, RoomType $roomType) {
+    $trail->parent('roomTypes');
+    $trail->push('Edit', route('room-types.edit', $roomType));
+});

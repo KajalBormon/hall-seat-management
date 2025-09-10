@@ -6,6 +6,7 @@ use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
 use App\Models\Room;
 use App\Services\RoomService;
+use App\Services\RoomTypeService;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -15,10 +16,12 @@ use Inertia\Inertia;
 class RoomController extends Controller implements HasMiddleware
 {
     protected RoomService $roomService;
+    protected RoomTypeService $roomTypeService;
 
-    public function __construct(RoomService $roomService)
+    public function __construct(RoomService $roomService, RoomTypeService $roomTypeService)
     {
         $this->roomService = $roomService;
+        $this->roomTypeService = $roomTypeService;
     }
 
     public static function middleware(): array
@@ -35,7 +38,7 @@ class RoomController extends Controller implements HasMiddleware
     public function index()
     {
         $breadcrumbs = Breadcrumbs::generate('rooms');
-        $rooms = $this->roomService->getRooms();
+        $rooms = $this->roomService->getRoomByProvost();
         $responseData = [
             'rooms' => $rooms,
             'breadcrumbs' => $breadcrumbs,
@@ -47,9 +50,11 @@ class RoomController extends Controller implements HasMiddleware
     public function create()
     {
         $breadcrumbs = Breadcrumbs::generate('createRoom');
+        $roomTypes = $this->roomTypeService->getRoomActiveTypeByProvost();
         $responseData = [
+            'roomTypes' => $roomTypes,
             'breadcrumbs' => $breadcrumbs,
-            'pageTitle' => 'Create Seat Plan',
+            'pageTitle' => 'Add Seat Plan',
         ];
         return Inertia::render('Room/Create', $responseData);
     }
@@ -66,8 +71,10 @@ class RoomController extends Controller implements HasMiddleware
     public function edit(Room $room)
     {
         $breadcrumbs = Breadcrumbs::generate('editRoom', $room);
+        $roomTypes = $this->roomTypeService->getRoomActiveTypeByProvost();
         $responseData = [
             'room' => $room,
+            'roomTypes' => $roomTypes,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => 'Update Seat Plan',
         ];

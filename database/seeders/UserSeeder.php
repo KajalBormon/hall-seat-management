@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Hall;
 use App\Models\User;
 use App\Constants\Constants;
 use Illuminate\Database\Seeder;
@@ -18,10 +19,12 @@ class UserSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('users')->truncate();
+        $hallIds = Hall::pluck('id')->toArray();
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('12345'),
+            'halls' => $hallIds
         ]);
         $user->assignRole(Constants::ROLE_SUPER_ADMIN);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');

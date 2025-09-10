@@ -34,7 +34,7 @@ class HallAttachmentController extends Controller
     public function index()
     {
         $breadcrumbs = Breadcrumbs::generate('hallAttachments');
-        $hallAttachments = $this->hallAttachmentService->getHallAttachments();
+        $hallAttachments = $this->hallAttachmentService->getHallAttachmentByProvost();
         $responseData = [
             'hallAttachments' => $hallAttachments,
             'breadcrumbs' => $breadcrumbs,

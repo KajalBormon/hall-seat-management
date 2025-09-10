@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->json('halls')->nullable();
             $table->timestamp('last_login_at')->nullable()->after('email_verified_at');
             $table->boolean('is_active')->default(true)->after('last_login_at');
             $table->boolean('soft_delete')->default(false)->after('is_active');
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('last_login_at');
             $table->dropColumn('is_active');
+            $table->dropForeign(['hall_id']);
             $table->dropColumn('soft_delete');
         });
     }

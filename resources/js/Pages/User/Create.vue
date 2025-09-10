@@ -29,7 +29,20 @@
                         </div>
 
                         <!-- Assign Role -->
-                        <div lass="mb-5 fv-row">
+                        <div class="mb-5 fv-row">
+                            <label class="fs-5 fw-semibold mb-2">Hall Name</label>
+                            <Multiselect
+                                placeholder="Select Hall Name"
+                                mode="tags"
+                                v-model="formData.halls"
+                                :searchable="true"
+                                :options="allHalls"
+                                label="name"
+                                trackBy="name"
+                                />
+                        </div>
+
+                        <div class="mb-5 fv-row">
                             <label class="fs-5 fw-semibold mb-2">{{ $t('user.label.assignRole') }}</label>
                             <Multiselect
                                 :placeholder="$t('user.placeholder.assignRole')"
@@ -66,7 +79,9 @@ import Multiselect from '@vueform/multiselect';
 const props = defineProps({
     user: Object,
     roles: Object,
+    halls: Object,
     currentRoles: Object,
+    currentHalls: Object,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
@@ -80,17 +95,27 @@ interface Role {
   id: number;
 }
 
+interface Hall {
+  id: number;
+}
+
 // assign all the roles from props to allRoles variable.
 const allRoles = ref<Array<any>>([]);
 if (Array.isArray(props.roles) && props.roles.length > 0) {
     allRoles.value = props.roles.map(role => ({value: role.id, name:role.name}));
 }
 
+const allHalls = ref<Array<any>>([]);
+if (Array.isArray(props.halls) && props.halls.length > 0) {
+    allHalls.value = props.halls.map(hall => ({value: hall.id, name: hall.name}));
+}
+
 const formData = useForm({
     name: props.user?.name || '',
     email: props.user?.email || '',
     password: '12345',
-    roles: props?.currentRoles !== undefined ? props.currentRoles.map((role: Role) => role.id) : []
+    roles: props?.currentRoles !== undefined ? props.currentRoles.map((role: Role) => role.id) : [],
+    halls: props?.currentHalls !== undefined ? props.currentHalls.map((hall: Hall) => hall.id) : []
 });
 
 const submit = () => {

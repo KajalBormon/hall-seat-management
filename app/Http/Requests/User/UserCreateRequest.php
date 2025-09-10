@@ -18,7 +18,8 @@ class UserCreateRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'roles' => 'nullable|array'
+            'roles' => 'nullable|array',
+            'halls' => 'nullable|array',
         ];
     }
 
@@ -30,7 +31,8 @@ class UserCreateRequest extends FormRequest
             'email.email' => __('validation.custom.user.email.email'),
             'email.unique' => __('validation.custom.user.email.unique'),
             'password.required' => __('validation.custom.user.password.required'),
-            'roles.array' => __('validation.custom.user.roles.array')
+            'roles.array' => __('validation.custom.user.roles.array'),
+            'halls.array' => 'Hall can be array',
         ];
     }
 }

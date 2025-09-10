@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HallAllotmentController;
 use App\Http\Controllers\HallAttachmentController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\StudentController;
 use App\Models\Department;
 use Inertia\Inertia;
@@ -108,6 +110,13 @@ Route::middleware(Language::class)
         Route::resource('hall-attachments', HallAttachmentController::class);
         Route::post('hall-attachments/student', [StudentController::class,'store'])->name('hallAttachments.student.store');
         Route::patch('/hall-attachment/{hallAttachment}/change-status', [HallAttachmentController::class, 'changeStatus'])->name('hall-attachments.changeStatus');
+
+        //Hall Allotment Route
+        Route::resource('hall-allotments', HallAllotmentController::class);
+
+        //Room Type Route
+        Route::resource('room-types', RoomTypeController::class);
+        Route::patch('/room-types/{roomType}/change-status', [RoomTypeController::class, 'changeStatus'])->name('room-types.changeStatus');
     });
 });
 

@@ -45,6 +45,15 @@ const sidebarMenuConfig: Array<MenuItem> = [
                         permission: "can-view-user",
                     },
                 ],
+
+            },
+
+            {
+                heading: 'Hall',
+                route: "/halls",
+                routePermissions: ["can-view-hall"],
+                // keenthemesIcon: "bank",
+                bootstrapIcon: "bi-building",
             },
 
         ],
@@ -82,11 +91,11 @@ const sidebarMenuConfig: Array<MenuItem> = [
             },
 
             {
-                heading: 'Hall',
-                route: "/halls",
-                routePermissions: ["can-view-hall"],
+                heading: 'Room Types',
+                route: "/room-types",
+                routePermissions: ["can-view-room-type"],
                 // keenthemesIcon: "bank",
-                bootstrapIcon: "bi-building",
+                bootstrapIcon: "bi-house-heart-fill",
             },
 
             {
@@ -103,6 +112,14 @@ const sidebarMenuConfig: Array<MenuItem> = [
                 routePermissions: ["can-view-hall-attachment"],
                 // keenthemesIcon: "bank",
                 bootstrapIcon: "bi-building-up",
+            },
+
+            {
+                heading: 'Hall Allotment',
+                route: "/hall-allotments",
+                routePermissions: ["can-view-hall-allotment"],
+                // keenthemesIcon: "bank",
+                bootstrapIcon: "bi-building-fill-check",
             },
 
         ],
