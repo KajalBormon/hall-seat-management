@@ -62,8 +62,10 @@ class RoleSeeder extends Seeder
             Role::create($role);
         }
         $superAdmin = Role::find(1);
+        $hallProvost = Role::find(2);
         $permissions = Permission::all();
         $superAdmin->syncPermissions($permissions);
+        $hallProvost->syncPermissions($permissions);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

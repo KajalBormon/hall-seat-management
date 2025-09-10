@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Room extends Model
 {
     protected $fillable = [
+        'hall_id',
+        'room_type_id',
         'room_number',
         'capacity'
     ];
@@ -15,5 +17,15 @@ class Room extends Model
     public function seats(): HasMany
     {
         return $this->hasMany(Seat::class);
+    }
+
+    public function hall()
+    {
+        return $this->belongsTo(Hall::class);
+    }
+
+    public function roomType()
+    {
+        return $this->belongsTo(RoomType::class);
     }
 }

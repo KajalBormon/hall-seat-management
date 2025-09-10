@@ -33,6 +33,11 @@ class StudentService extends BaseModelService
         return $this->model()::where('hall_status', null)->get();
     }
 
+    public function getAttachmentStudents()
+    {
+        return $this->model()::where('hall_status', 'attachment')->get();
+    }
+
     public function createStudent(array $validatedData)
     {
         return DB::transaction(function () use ($validatedData) {

@@ -366,6 +366,46 @@ class PermissionSeeder extends Seeder
                 'group_name' => 'Hall Allotment Management',
                 'is_active' => true,
             ],
+            [
+                'id' => 44,
+                'display_name' => 'রুম টাইপ দেখা',
+                'name' => 'can-view-room-type',
+                'guard_name' => 'web',
+                'group_name' => 'Room Type Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 45,
+                'display_name' => 'রুম টাইপ তৈরী করা',
+                'name' => 'can-create-room-type',
+                'guard_name' => 'web',
+                'group_name' => 'Room Type Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 46,
+                'display_name' => 'রুম টাইপ আপডেট করা',
+                'name' => 'can-edit-room-type',
+                'guard_name' => 'web',
+                'group_name' => 'Room Type Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 47,
+                'display_name' => 'রুম টাইপ ডিলিট করা',
+                'name' => 'can-delete-room-type',
+                'guard_name' => 'web',
+                'group_name' => 'Room Type Management',
+                'is_active' => true,
+            ],
+            [
+                'id' => 48,
+                'display_name' => 'রুম টাইপ ডিটেইলস দেখা',
+                'name' => 'can-view-details-room-type',
+                'guard_name' => 'web',
+                'group_name' => 'Room Type Management',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($permissions as $permission) {

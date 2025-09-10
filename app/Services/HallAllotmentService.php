@@ -27,6 +27,16 @@ class HallAllotmentService extends BaseModelService
         return $this->model()::with(['student', 'hall', 'seat'])->get();
     }
 
+    public function getHallAllotmentByProvost()
+    {
+        $user = auth()->user();
+        $hallIds = $user->halls;
+
+        return $this->model()::with(['student', 'hall', 'seat'])
+            ->whereIn('hall_id', $hallIds)
+            ->get();
+    }
+
     public function createHallAllotment(array $data)
     {
         return DB::transaction(function () use ($data) {

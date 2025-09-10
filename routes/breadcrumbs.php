@@ -14,6 +14,7 @@ use App\Models\HallAttachment;
 use App\Models\Item\Item;
 use App\Models\PaymentMethod;
 use App\Models\Room;
+use App\Models\RoomType;
 use App\Models\Student;
 use App\Models\Subscription\SubscriptionPlan;
 use App\Models\Subscription\SubscriptionPlanFeature;
@@ -261,3 +262,20 @@ Breadcrumbs::for('editHallAllotment', function (BreadcrumbTrail $trail, HallAllo
     $trail->push('Edit', route('hall-allotments.edit', $hallAllotment));
 });
 
+//Room Type list
+Breadcrumbs::for('roomTypes', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Room Types', route('room-types.index'));
+});
+
+//Create Room type
+Breadcrumbs::for('createRoomType', function (BreadcrumbTrail $trail) {
+    $trail->parent('roomTypes');
+    $trail->push('Add', route('room-types.create'));
+});
+
+//Edit Room Type
+Breadcrumbs::for('editRoomType', function (BreadcrumbTrail $trail, RoomType $roomType) {
+    $trail->parent('roomTypes');
+    $trail->push('Edit', route('room-types.edit', $roomType));
+});

@@ -7,7 +7,7 @@
                     <!--begin::Search-->
                     <div class="d-flex align-items-center position-relative my-1">
                         <KTIcon icon-name="magnifier" icon-class="fs-1 position-absolute ms-6" />
-                        <input type="text" v-model="search" @input="searchData()" class="form-control form-control-solid w-250px ps-15" :placeholder="$t('permission.placeholder.searchPermissions')" />
+                        <input type="text" v-model="search" @input="searchData()" class="form-control form-control-solid w-250px ps-15" placeholder="Search Student" />
                     </div>
                     <!--end::Search-->
                 </div>
@@ -16,10 +16,10 @@
                     <!--begin::Toolbar-->
                     <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                         <!--begin::Add Permission-->
-                        <Link v-if="checkPermission('can-create-student')" :href="route('students.create')" class="btn btn-primary">
+                        <!-- <Link v-if="checkPermission('can-create-student')" :href="route('students.create')" class="btn btn-primary">
                             <KTIcon icon-name="plus" icon-class="fs-2" />
                             Add Student
-                        </Link>
+                        </Link> -->
                         <!--end::Add Permission-->
                     </div>
                     <!--end::Toolbar-->

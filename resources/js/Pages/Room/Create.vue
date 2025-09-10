@@ -24,6 +24,23 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row mb-2 g-4">
+                            <div class="col-md-12 fv-row">
+                                <div class="d-flex flex-column mb-5 fv-row">
+                                    <label class="required fs-5 fw-semibold mb-2">Room Type </label>
+                                    <Multiselect
+                                        placeholder="Select Room Type"
+                                        v-model="formData.room_type_id"
+                                        :searchable="true"
+                                        :options="allRoomTypes"
+                                        label="name"
+                                        trackBy="name"
+                                    />
+                                    <ErrorMessage :errorMessage="formData.errors.room_type_id" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!--end::Card body-->
 
@@ -48,6 +65,7 @@ import { ref } from 'vue';
 
 const props = defineProps({
     room: Object,
+    roomTypes: Object,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
@@ -60,7 +78,13 @@ interface Breadcrumb {
 const formData = useForm({
     id: props.room?.id || '',
     room_number: props.room?.room_number || '',
+    room_type_id: props.room?.room_type_id || '',
 });
+
+const allRoomTypes = ref<Array<any>>([]);
+if (Array.isArray(props.roomTypes) && props.roomTypes.length > 0) {
+    allRoomTypes.value = props.roomTypes.map((roomType: any) => ({value: roomType.id, name: roomType.name}));
+}
 
 const submit = () => {
     if (props.room?.id) {

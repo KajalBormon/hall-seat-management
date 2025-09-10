@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Room;
+namespace App\Http\Requests\RoomType;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRoomRequest extends FormRequest
+class UpdateRoomTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,19 +22,17 @@ class CreateRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'room_type_id' => 'nullable|exists:room_types,id',
-            'room_number' => 'required',
-            'capacity' => 'nullable|integer|min:1',
+            'name' => 'required|string|max:255',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'room_type_id.exists'  => 'The selected room type is invalid.',
-            'room_number.required' => 'The room number is required.',
-            'capacity.integer'     => 'The capacity must be a number.',
-            'capacity.min'         => 'The capacity must be at least 1.',
+            'name.required' => 'The name field is required.',
+            'name.string'   => 'The name must be a valid string.',
+            'name.max'      => 'The name may not be greater than 255 characters.',
         ];
     }
+
 }

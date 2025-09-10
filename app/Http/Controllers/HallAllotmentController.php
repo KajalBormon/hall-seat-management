@@ -8,6 +8,7 @@ use App\Models\HallAllotment;
 use App\Services\DepartmentService;
 use App\Services\HallAllotmentService;
 use App\Services\HallService;
+use App\Services\RoomService;
 use App\Services\SeatService;
 use App\Services\StudentService;
 use Diglactic\Breadcrumbs\Breadcrumbs;
@@ -21,14 +22,16 @@ class HallAllotmentController extends Controller
     protected HallService $hallService;
     protected DepartmentService $departmentService;
     protected SeatService $seatService;
+    protected RoomService $roomService;
 
-    public function __construct(HallAllotmentService $hallAllotmentService, StudentService $studentService, HallService $hallService, DepartmentService $departmentService, SeatService $seatService)
+    public function __construct(HallAllotmentService $hallAllotmentService, StudentService $studentService, HallService $hallService, DepartmentService $departmentService, SeatService $seatService, RoomService $roomService)
     {
         $this->hallAllotmentService = $hallAllotmentService;
         $this->studentService = $studentService;
         $this->hallService = $hallService;
         $this->departmentService = $departmentService;
         $this->seatService = $seatService;
+        $this->roomService = $roomService;
     }
 
     /**
@@ -37,7 +40,7 @@ class HallAllotmentController extends Controller
     public function index()
     {
         $breadcrumbs = Breadcrumbs::generate('hallAllotments');
-        $hallAllotments = $this->hallAllotmentService->getHallAllotments();
+        $hallAllotments = $this->hallAllotmentService->getHallAllotmentByProvost();
         $responseData = [
             'hallAllotments' => $hallAllotments,
             'breadcrumbs' => $breadcrumbs,
@@ -54,16 +57,18 @@ class HallAllotmentController extends Controller
     {
         $breadcrumbs = Breadcrumbs::generate('createHallAllotment');
         $studentId = $request->query('studentId');
-        $students = $this->studentService->getStudentsWithOutAttachOrAllotment();
+        $students = $this->studentService->getAttachmentStudents();
         $halls = $this->hallService->getHalls();
         $departments = $this->departmentService->getActiveDepartments();
-        $seats = $this->seatService->getEmptySeats();
+        $seats = $this->seatService->getEmptySeatByHallProvost();
+        $rooms = $this->roomService->getRoomByProvost();
 
         $responseData = [
             'students' => $students,
             'halls' => $halls,
             'departments' => $departments,
             'seats' => $seats,
+            'rooms' => $rooms,
             'studentId' => $studentId,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => 'Add Hall Allotment',

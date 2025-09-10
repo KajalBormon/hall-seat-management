@@ -51,15 +51,16 @@
                             <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">Hall Name</label>
-                                    <Multiselect
+                                    <!-- <Multiselect
                                         placeholder="Select Student"
                                         v-model="formData.hall_id"
                                         :searchable="true"
                                         :options="allHalls"
                                         label="name"
                                         trackBy="name"
-                                    />
-                                    <ErrorMessage :errorMessage="formData.errors.hall_id" />
+                                    /> -->
+                                    <Field type="text" class="form-control form-control-lg form-control-solid" placeholder="Hall Name" name="hall_name" v-model="formData.hall_name" disabled/>
+                                    <ErrorMessage :errorMessage="formData.errors.hall_name" />
                                 </div>
                             </div>
 
@@ -80,7 +81,14 @@
                         </div>
 
                         <div class="row mb-2 g-4">
-                            <div class="col-md-12 fv-row">
+                            <div class="col-md-6 fv-row">
+                                <div class="d-flex flex-column mb-5 fv-row">
+                                    <label class="fs-5 fw-semibold mb-2">Room Type</label>
+                                    <Field type="text" class="form-control form-control-lg form-control-solid" placeholder="Room Type" name="room_type_name" v-model="formData.room_type_name"/>
+                                    <ErrorMessage :errorMessage="formData.errors.room_type_name" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">Allotment Date</label>
                                     <Field type="date" class="form-control form-control-lg form-control-solid" placeholder="Allotment Date" name="allotment_date" v-model="formData.allotment_date"/>
@@ -112,7 +120,7 @@ import Multiselect from '@vueform/multiselect';
 import KTIcon from "@/Core/helpers/kt-icon/KTIcon.vue";
 import { checkPermission } from "@/Core/helpers/Permission";
 import { ref, watch } from 'vue';
-import AddStudentModal from "@/Pages/hallAllotment/Modal/AddStudentModal.vue";
+import AddStudentModal from "@/Pages/HallAllotment/Modal/AddStudentModal.vue";
 
 const props = defineProps({
     hallAllotment: Object,
@@ -121,9 +129,11 @@ const props = defineProps({
     departments: Object,
     studentId: Number,
     seats: Object,
+    rooms: Object,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
+console.log(props.rooms);
 
 interface Breadcrumb {
     url: string;
@@ -146,11 +156,13 @@ const formData = useForm({
     seat_id: props.hallAllotment?.seat_id || '',
     allotment_date: props.hallAllotment?.allotment_date || today,
     student_name: props.students?.find((student: any) => student.id === props.hallAllotment?.student_id)?.name || '',
+    hall_name: props.halls?.find((hall: any) => hall.id === props.hallAllotment?.hall_id)?.name || '',
+    room_type_name: props.rooms?.find((room: any) => room.id === props.hallAllotment?.room_id)?.room_type?.name || '',
 });
 
 const allStudents = ref<Array<any>>([]);
 if (Array.isArray(props.students) && props.students.length > 0) {
-    allStudents.value = props.students.map((student: any) => ({value: student.id, roll: student.roll, name: student.name}));
+    allStudents.value = props.students.map((student: any) => ({value: student.id, roll: student.roll, name: student.name, hall_id: student.hall_id}));
 }
 
 const allHalls = ref<Array<any>>([]);
@@ -170,8 +182,28 @@ if (Array.isArray(props.seats) && props.seats.length > 0) {
 
 watch(() => formData.student_id, (newId) => {
     const selected = allStudents.value.find((s: any) => s.value === newId);
+    const hallSelected = allHalls.value.find((h: any) => h.value === selected?.hall_id);
     formData.student_name = selected ? selected.name : '';
+    formData.hall_id = selected ? selected.hall_id : '';
+    formData.hall_name = hallSelected ? hallSelected.name  : '';
 });
+
+watch(() => formData.seat_id, (newSeatId) => {
+    const selectedSeat = props.seats?.find((seat: any) => seat.id === newSeatId);
+
+    if (selectedSeat) {
+        const selectedRoom = props.rooms?.find((room: any) => room.id === selectedSeat.room_id);
+
+        if (selectedRoom && selectedRoom.room_type) {
+            formData.room_type_name = selectedRoom.room_type.name;
+        } else {
+            formData.room_type_name = '';
+        }
+    } else {
+        formData.room_type_name = '';
+    }
+});
+
 
 const submit = () => {
     if (props.hallAllotment?.id) {

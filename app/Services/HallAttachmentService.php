@@ -26,6 +26,16 @@ class HallAttachmentService extends BaseModelService
         return $this->model()::with(['hall', 'student'])->get();
     }
 
+    public function getHallAttachmentByProvost()
+    {
+        $user = auth()->user();
+        $hallIds = $user->halls;
+
+        return $this->model()::with(['hall', 'student'])
+            ->whereIn('hall_id', $hallIds)
+            ->get();
+    }
+
     public function createHallAttachment(array $data)
     {
         return DB::transaction(function () use ($data) {

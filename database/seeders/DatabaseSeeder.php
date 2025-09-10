@@ -18,13 +18,14 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
+            HallSeeder::class,
             UserSeeder::class,
             DivisionSeeder::class,
             DistrictSeeder::class,
             UpazilaSeeder::class,
             UnionSeeder::class,
-            HallSeeder::class,
             DepartmentSeeder::class,
+            RoomTypeSeeder::class,
         ]);
     }
 }

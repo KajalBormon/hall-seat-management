@@ -23,4 +23,18 @@ class SeatService extends BaseModelService
     {
         return $this->model()::where('status', 'empty')->get();
     }
+
+    public function getEmptySeatByHallProvost()
+    {
+        $user = auth()->user();
+
+        // Decode halls (cast in model if possible)
+        $hallIds = is_array($user->halls) ? $user->halls : json_decode($user->halls, true);
+
+        return $this->model()::where('status', 'empty')
+            ->whereHas('room', function ($q) use ($hallIds) {
+                $q->whereIn('hall_id', $hallIds);
+            })
+            ->get();
+    }
 }

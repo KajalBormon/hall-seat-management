@@ -25,7 +25,8 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$userId,
-            'roles' => 'nullable|array'
+            'roles' => 'nullable|array',
+            'halls' => 'nullable|array',
         ];
     }
 
@@ -40,7 +41,8 @@ class UserUpdateRequest extends FormRequest
             'email.email' => __('validation.custom.user.email.email'),
             'email.unique' => __('validation.custom.user.email.unique'),
             'password.required' => __('validation.custom.user.password.required'),
-            'roles.array' => __('validation.custom.user.roles.array')
+            'roles.array' => __('validation.custom.user.roles.array'),
+            'halls.array' => 'hall can be array',
         ];
     }
 }
