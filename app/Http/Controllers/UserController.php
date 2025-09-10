@@ -107,10 +107,12 @@ class UserController extends Controller implements HasMiddleware
         $breadcrumbs = Breadcrumbs::generate('editUser', $user);
         $roles = $this->roleService->getActiveRoles();
         $currentRoles = $user->roles;
+        $currentHalls = $user->halls;
         $responseData = [
             'user' => $user,
             'roles' => $roles,
             'currentRoles' => $currentRoles,
+            'currentHalls' => $currentHalls,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => __('pageTitle.custom.user.edit'),
         ];

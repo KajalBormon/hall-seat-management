@@ -81,6 +81,7 @@ const props = defineProps({
     roles: Object,
     halls: Object,
     currentRoles: Object,
+    currentHalls: Object,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
@@ -91,6 +92,10 @@ interface Breadcrumb {
 }
 
 interface Role {
+  id: number;
+}
+
+interface Hall {
   id: number;
 }
 

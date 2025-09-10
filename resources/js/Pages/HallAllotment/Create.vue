@@ -125,7 +125,7 @@ import AddStudentModal from "@/Pages/HallAllotment/Modal/AddStudentModal.vue";
 const props = defineProps({
     hallAllotment: Object,
     students: Array as () => IStudent[] | undefined,
-    halls: Array,
+    halls: Array as () => IHall[] | undefined,
     departments: Object,
     studentId: Number,
     seats: Object,
@@ -133,7 +133,7 @@ const props = defineProps({
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
-console.log(props.rooms);
+
 
 interface Breadcrumb {
     url: string;
@@ -144,6 +144,12 @@ interface IStudent {
     id: number;
     name: string;
     roll: string;
+    [key: string]: any;
+}
+
+interface IHall {
+    id: number;
+    name: string;
     [key: string]: any;
 }
 

@@ -90,6 +90,13 @@ interface IRoomType {
     id: number;
     name: string;
     is_active: boolean;
+    hall_name: string;
+    hall?: IHall;
+}
+
+interface IHall {
+    id: number;
+    name: string;
 }
 
 const tableHeader = ref([
@@ -127,7 +134,7 @@ onMounted(() => {
         initRoomTypes.value = props.roomTypes.map(room => ({
             id: room.id,
             name: room.name,
-            hall_name: room.hall?.name,
+            hall_name: room.hall?.name || '',
             is_active: room.is_active
         }));
         tableData.value = initRoomTypes.value;

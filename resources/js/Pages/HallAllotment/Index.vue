@@ -95,10 +95,9 @@ interface IHallAllotment {
     student_roll: number;
     student_name: string;
     hall_name: string;
-    is_approved: boolean;
-    is_active: boolean;
     student?: IStudent;
-    hall?: IHall;
+    hall?: IHall;      
+    seat_code?: string;
 }
 
 interface IStudent {
@@ -152,10 +151,10 @@ onMounted(() => {
     if (props.hallAllotments) {
         initHallAllotments.value = props.hallAllotments.map((allotment: any) => ({
             id: allotment.id,
-            student_roll: allotment.student?.roll,
-            student_name: allotment.student?.name,
-            hall_name: allotment.hall?.name,
-            seat_code: allotment.seat?.seat_code,
+            student_roll: allotment.student?.roll || '',
+            student_name: allotment.student?.name || '',
+            hall_name: allotment.hall?.name || '',
+            seat_code: allotment.seat?.seat_code || '',
         }));
         tableData.value = initHallAllotments.value;
     }
