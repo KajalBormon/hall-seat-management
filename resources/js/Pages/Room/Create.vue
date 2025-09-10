@@ -28,7 +28,7 @@
                         <div class="row mb-2 g-4">
                             <div class="col-md-12 fv-row">
                                 <div class="d-flex flex-column mb-5 fv-row">
-                                    <label class="required fs-5 fw-semibold mb-2">Room Type </label>
+                                    <label class="fs-5 fw-semibold mb-2">Room Type </label>
                                     <Multiselect
                                         placeholder="Select Room Type"
                                         v-model="formData.room_type_id"

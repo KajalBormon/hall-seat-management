@@ -37,4 +37,24 @@ class SeatService extends BaseModelService
             })
             ->get();
     }
+
+    public function getSeatsForEdit($currentSeatId = null)
+    {
+        $user = auth()->user();
+        $hallIds = is_array($user->halls) ? $user->halls : json_decode($user->halls, true);
+
+        $query = $this->model()::where(function ($q) use ($hallIds) {
+            $q->where('status', 'empty')
+            ->whereHas('room', function ($q2) use ($hallIds) {
+                $q2->whereIn('hall_id', $hallIds);
+            });
+        });
+
+        // If editing, include the student's current seat even if it's occupied
+        if ($currentSeatId) {
+            $query->orWhere('id', $currentSeatId);
+        }
+
+        return $query->get();
+    }
 }

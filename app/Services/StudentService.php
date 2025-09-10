@@ -35,7 +35,11 @@ class StudentService extends BaseModelService
 
     public function getAttachmentStudents()
     {
-        return $this->model()::where('hall_status', 'attachment')->get();
+        $user = auth()->user();
+        $hallIds = $user->halls;
+        return $this->model()::whereIn('hall_id', $hallIds)
+            ->where('hall_status', 'attachment')
+            ->get();
     }
 
     public function createStudent(array $validatedData)

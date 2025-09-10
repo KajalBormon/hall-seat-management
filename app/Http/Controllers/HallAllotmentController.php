@@ -106,7 +106,7 @@ class HallAllotmentController extends Controller
         $students = $this->studentService->getStudents();
         $halls = $this->hallService->getHalls();
         $departments = $this->departmentService->getActiveDepartments();
-        $seats = $this->seatService->all();
+        $seats = $this->seatService->getSeatsForEdit($hallAllotment->seat_id);
 
         $responseData = [
             'hallAllotment' => $hallAllotment,
