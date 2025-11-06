@@ -54,6 +54,8 @@ class HallAllotmentService extends BaseModelService
                 'status' => 'alloted'
             ]);
 
+            //Also Delete attachment
+
             return $hallAllotment;
         });
     }
@@ -98,7 +100,7 @@ class HallAllotmentService extends BaseModelService
             if ($student) {
                 $student->update([
                     'hall_id' => null,
-                    'hall_status' => null
+                    'hall_status' => 'cancel',
                 ]);
             }
 

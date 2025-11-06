@@ -94,7 +94,7 @@
                                 <KTIcon icon-name="pencil" icon-class="fs-3 text-primary" />
                             </Link>
                             <!-- Delete -->
-                            <DeleteConfirmationButton v-if="checkPermission('can-delete-hall-allotment')" iconClass="fs-2" :obj="hallAllotment" confirmRoute="hall-allotments.destroy" title="Delete hall" :messageTitle="`${hallAllotment.student_name} hall allotment?`"/>
+                            <DeleteConfirmationButton v-if="checkPermission('can-delete-hall-allotment')" iconClass="fs-2" :obj="hallAllotment" confirmRoute="hall-allotments.destroy" title="Delete hall" :messageTitle="`${hallAllotment.student_name} hall allotment cancel?`"/>
                         </div>
                     </template>
                 </Datatable>
