@@ -96,6 +96,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12 fv-row">
+                                <div class="d-flex flex-column mb-5 fv-row">
+                                    <label class="required fs-5 fw-semibold mb-2">Starting Month</label>
+                                    <Multiselect
+                                        placeholder="Starting Month"
+                                        v-model="formData.starting_month"
+                                        :searchable="true"
+                                        :options="props?.getMonths"
+                                        label="name"
+                                        trackBy="value"
+                                    />
+                                    <ErrorMessage :errorMessage="formData.errors.starting_month" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!--end::Card body-->
 
@@ -130,6 +146,7 @@ const props = defineProps({
     studentId: Number,
     seats: Object,
     rooms: Object,
+    getMonths: Array,
     breadcrumbs: Array as() => Breadcrumb[],
     pageTitle: String,
 });
@@ -161,6 +178,7 @@ const formData = useForm({
     hall_id: props.hallAllotment?.hall_id || '',
     seat_id: props.hallAllotment?.seat_id || '',
     allotment_date: props.hallAllotment?.allotment_date || today,
+    starting_month: props?.hallAllotment?.starting_month || '',
     student_name: props.students?.find((student: any) => student.id === props.hallAllotment?.student_id)?.name || '',
     hall_name: props.halls?.find((hall: any) => hall.id === props.hallAllotment?.hall_id)?.name || '',
     room_type_name: props.rooms?.find((room: any) => room.id === props.hallAllotment?.room_id)?.room_type?.name || '',

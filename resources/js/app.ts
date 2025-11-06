@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import i18n from '@/Core/plugins/i18n';
 import "element-plus/dist/index.css";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import { createApp, h, DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';

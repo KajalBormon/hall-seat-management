@@ -11,6 +11,8 @@ class HallAllotment extends Model
         'student_id',
         'seat_id',
         'allotment_date',
+        'starting_month',
+        'comment',
         'status'
     ];
 

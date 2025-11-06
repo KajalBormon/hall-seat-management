@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\HallAllotment;
 use App\Models\Seat;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class HallAllotmentService extends BaseModelService
@@ -116,5 +117,19 @@ class HallAllotmentService extends BaseModelService
         });
     }
 
+    public function getCurrentYearMonths()
+    {
+        $year = now()->year;
+        $months = [];
 
+        for ($i = 1; $i <= 12; $i++) {
+            $month = Carbon::createFromDate($year, $i, 1);
+            $months[] = [
+                'name' => $month->format('M - Y'), // Displayed label (e.g. "Jan - 2025")
+                'value' => $month->format('Y-m'),  // Machine value (e.g. "2025-01")
+            ];
+        }
+
+        return $months;
+    }
 }
