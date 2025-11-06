@@ -64,7 +64,8 @@
                         <span :class="{
                                 'badge': true,
                                 'badge-warning': student.hall_status === 'attachment',
-                                'badge-success': student.hall_status === 'alloted'
+                                'badge-success': student.hall_status === 'alloted',
+                                'badge-danger': student.hall_status === 'cancel'
                             }" style="text-transform: capitalize">
                         {{ student.hall_status || 'N/A' }}
                         </span>
