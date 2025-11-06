@@ -26,6 +26,8 @@ class UpdateHallAllotmentRequest extends FormRequest
             'student_id' => 'required|exists:students,id',
             'seat_id' => 'required|exists:seats,id',
             'allotment_date' => 'required|date',
+            'starting_month' => 'nullable',
+            'comment' => 'nullable'
         ];
     }
 

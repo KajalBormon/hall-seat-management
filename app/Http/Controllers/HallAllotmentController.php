@@ -41,6 +41,7 @@ class HallAllotmentController extends Controller
     {
         $breadcrumbs = Breadcrumbs::generate('hallAllotments');
         $hallAllotments = $this->hallAllotmentService->getHallAllotmentByProvost();
+        
         $responseData = [
             'hallAllotments' => $hallAllotments,
             'breadcrumbs' => $breadcrumbs,
@@ -62,6 +63,7 @@ class HallAllotmentController extends Controller
         $departments = $this->departmentService->getActiveDepartments();
         $seats = $this->seatService->getEmptySeatByHallProvost();
         $rooms = $this->roomService->getRoomByProvost();
+        $getMonths = $this->hallAllotmentService->getCurrentYearMonths();
 
         $responseData = [
             'students' => $students,
@@ -70,6 +72,7 @@ class HallAllotmentController extends Controller
             'seats' => $seats,
             'rooms' => $rooms,
             'studentId' => $studentId,
+            'getMonths' => $getMonths,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => 'Add Hall Allotment',
         ];
@@ -107,6 +110,7 @@ class HallAllotmentController extends Controller
         $halls = $this->hallService->getHalls();
         $departments = $this->departmentService->getActiveDepartments();
         $seats = $this->seatService->getSeatsForEdit($hallAllotment->seat_id);
+        $getMonths = $this->hallAllotmentService->getCurrentYearMonths();
 
         $responseData = [
             'hallAllotment' => $hallAllotment,
@@ -115,6 +119,7 @@ class HallAllotmentController extends Controller
             'departments' => $departments,
             'seats' => $seats,
             'studentId' => $studentId,
+            'getMonths' => $getMonths,
             'breadcrumbs' => $breadcrumbs,
             'pageTitle' => 'Add Hall Allotment',
         ];

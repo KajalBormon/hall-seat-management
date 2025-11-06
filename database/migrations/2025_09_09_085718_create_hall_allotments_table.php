@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->foreignId('seat_id')->constrained('seats')->onDelete('cascade');
             $table->date('allotment_date');
+            $table->string('starting_month')->nullable();
+            $table->string('comment')->nullable();
             $table->string('status')->default('pending'); //pending, approved, cancel
             $table->timestamps();
         });
